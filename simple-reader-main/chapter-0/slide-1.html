@@ -242,7 +242,6 @@
                                 <ellipse cx="262" cy="470" rx="20" ry="8" fill="#f59e0b"/>
                                 <ellipse cx="262" cy="460" rx="20" ry="8" fill="url(#coinGrad)"/>
                                 <ellipse cx="262" cy="450" rx="20" ry="8" fill="url(#coinGrad)"/>
-                                <ellipse cx="262" cy="450" rx="20" ry="8" fill="#fbbf24" fill-opacity="0"/>
                                 <ellipse cx="262" cy="450" rx="12" ry="4.5" fill="#fde68a"/>
                             </g>
 
@@ -272,7 +271,9 @@
                     el.style.opacity = '1';
                     el.style.transform = 'none';
                 });
-                gsapSafeIdleFallback();
+                document.querySelectorAll('#phone, #credit-card, #bell, #figure, #bill-paper, #coins').forEach((el) => {
+                    el.style.opacity = '1';
+                });
                 return;
             }
 
@@ -315,12 +316,6 @@
             gsap.to('#bill-paper', { y: -8, rotation: -11, duration: 2.8, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.6 });
             gsap.to('#coins', { y: -5, duration: 2.2, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.15 });
             gsap.to('#bell circle:last-of-type', { scale: 1.25, transformOrigin: 'center', duration: 0.8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-        }
-
-        function gsapSafeIdleFallback() {
-            document.querySelectorAll('#phone, #credit-card, #bell, #figure, #bill-paper, #coins').forEach((el) => {
-                el.style.opacity = '1';
-            });
         }
 
         playIn();

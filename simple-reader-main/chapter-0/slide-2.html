@@ -45,52 +45,203 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        @keyframes wave {
-            0%, 100% { height: 4px; }
-            50% { height: 14px; }
+        .dot-grid {
+            background-image: radial-gradient(rgba(99, 102, 241, 0.16) 1.5px, transparent 1.5px);
+            background-size: 26px 26px;
         }
-        .wave-bar { animation: wave 1s ease-in-out infinite; }
+        .ghost-number {
+            -webkit-text-stroke: 2px rgba(148, 163, 184, 0.28);
+            color: transparent;
+            font-weight: 900;
+            line-height: 0.8;
+            letter-spacing: -0.06em;
+            user-select: none;
+        }
+        .dark .ghost-number {
+            -webkit-text-stroke: 2px rgba(148, 163, 184, 0.18);
+        }
+        .idiom-quote::before {
+            content: '“';
+            position: absolute;
+            top: -28px;
+            left: 6px;
+            font-size: 7rem;
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.14);
+        }
+        .chip {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .chip:hover {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body class="h-full overflow-x-hidden">
 <div class="isolate relative min-h-[100dvh] overflow-x-hidden overflow-y-auto bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
     <div class="pointer-events-none fixed inset-0 z-0">
         <div class="absolute -top-28 -left-28 h-80 w-80 rounded-full bg-indigo-500/15 blur-3xl dark:bg-indigo-500/25"></div>
-        <div class="absolute -bottom-36 -right-28 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-500/20"></div>
-        <div class="absolute left-1/2 top-[85%] -translate-x-1/2 h-[28rem] w-[28rem] rounded-full bg-emerald-500/10 blur-3xl dark:bg-emerald-500/15"></div>
+        <div class="absolute -bottom-36 -right-28 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl dark:bg-emerald-500/20"></div>
+        <div class="absolute left-1/2 top-[85%] -translate-x-1/2 h-[28rem] w-[28rem] rounded-full bg-rose-500/10 blur-3xl dark:bg-rose-500/10"></div>
+        <div class="dot-grid absolute left-0 top-0 h-56 w-72 opacity-60 dark:opacity-30"></div>
     </div>
 
     <div class="relative z-10">
         <div class="relative min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto">
-            <div class="mx-auto flex min-h-[100dvh] w-full max-w-[1100px] flex-col items-center justify-center gap-10 px-6 py-10">
-                <div class="header-section -translate-y-5 text-center opacity-0">
-                    <span class="inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.3em] text-indigo-500 dark:border-indigo-800/50 dark:bg-indigo-900/30 dark:text-indigo-400">
-                        SLIDE 02 — HELLO! CAN YOU INTRODUCE YOURSELF?
-                    </span>
+            <div class="mx-auto flex min-h-[100dvh] w-full max-w-[1200px] items-center px-6 py-10 lg:px-16 lg:py-14">
+                <div class="slide-content grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
 
-                    <h1 class="mt-6 mb-8 text-3xl font-black tracking-tight text-slate-900 transition-colors sm:text-4xl md:text-5xl dark:text-slate-100">
-                        Introducing yourself
-                    </h1>
-                </div>
-
-                <div class="video-grid grid w-full grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-                    <div class="video-card group relative aspect-square overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-300 opacity-0 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.15)] transition-colors duration-300 max-md:aspect-[4/3] scale-90 dark:border-slate-700 dark:bg-slate-800" id="card-1">
-                        <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://remtoo.net/slider/A1/Beginner/chapter-1/img/female.webp" alt="Instructor">
-                        <div class="participant-name absolute bottom-6 left-6 rounded-2xl border border-white bg-white/90 px-5 py-2.5 text-sm font-bold text-slate-800 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-100">
-                            Tutor
+                    <!-- LEFT: lesson intro -->
+                    <div class="text-section z-10 text-center lg:text-left">
+                        <div class="flex items-center justify-center gap-3 opacity-0 lg:justify-start" id="meta-line">
+                            <span class="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-4 py-1.5 text-[0.7rem] font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:border-indigo-500/30 dark:bg-indigo-500/15 dark:text-indigo-300">
+                                <span class="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                                A2.1
+                            </span>
+                            <span class="text-[0.7rem] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                                Unit 07 · Lesson 03
+                            </span>
                         </div>
-                        <div class="mic-wave absolute right-6 top-6 flex h-[14px] items-end gap-[3px] rounded-lg bg-white/90 p-2 backdrop-blur transition-colors duration-300 dark:bg-slate-900/90">
-                            <div class="wave-bar w-[3px] rounded-[1.5px] bg-indigo-500" style="animation-delay: 0.1s"></div>
-                            <div class="wave-bar w-[3px] rounded-[1.5px] bg-indigo-500" style="animation-delay: 0.3s"></div>
-                            <div class="wave-bar w-[3px] rounded-[1.5px] bg-indigo-500" style="animation-delay: 0.2s"></div>
+
+                        <p class="lesson-label mb-4 mt-6 text-xs font-black uppercase tracking-[0.35em] text-indigo-500 dark:text-indigo-400 opacity-0">
+                            Health
+                        </p>
+
+                        <h1 class="hero-title mb-6 text-5xl font-black leading-[0.95] tracking-[-0.045em] opacity-0 sm:text-6xl lg:text-6xl xl:text-7xl">
+                            Health and
+                            <span class="bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-400 bg-clip-text text-transparent dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-300">Safety</span>
+                        </h1>
+
+                        <p class="hero-subtitle mx-auto mb-8 max-w-[440px] text-base font-medium leading-relaxed text-slate-500 opacity-0 sm:text-lg lg:mx-0 dark:text-slate-400">
+                            Learn how to talk about health, safety, and looking after yourself.
+                        </p>
+
+                        <div class="idiom-card relative mx-auto max-w-[520px] overflow-hidden rounded-[1.8rem] bg-gradient-to-br from-indigo-600 via-indigo-600 to-blue-700 p-8 pt-10 text-left opacity-0 shadow-[0_40px_80px_-30px_rgba(79,70,229,0.55)] ring-1 ring-white/20 lg:mx-0">
+                            <div class="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10 blur-2xl"></div>
+                            <div class="pointer-events-none absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-cyan-400/20 blur-2xl"></div>
+
+                            <p class="idiom-label relative mb-4 flex items-center gap-3 text-[0.68rem] font-black uppercase tracking-[0.3em] text-indigo-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>
+                                    <circle cx="12" cy="12" r="4"/>
+                                </svg>
+                                Idiom of the lesson
+                            </p>
+                            <p class="idiom-quote relative text-[1.65rem] font-black leading-snug tracking-tight text-white sm:text-3xl">
+                                An apple a day keeps the doctor away
+                            </p>
+                            <div class="mt-6 flex items-center gap-2.5 border-t border-white/15 pt-4 text-sm font-bold text-indigo-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                What do you think it means?
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex flex-wrap items-center justify-center gap-2.5 opacity-0 lg:justify-start" id="chips-line">
+                            <span class="chip rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[0.7rem] font-extrabold uppercase tracking-[0.12em] text-slate-500 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">Vocabulary</span>
+                            <span class="chip rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[0.7rem] font-extrabold uppercase tracking-[0.12em] text-slate-500 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">Speaking</span>
+                            <span class="chip rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[0.7rem] font-extrabold uppercase tracking-[0.12em] text-slate-500 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">Real-life practice</span>
                         </div>
                     </div>
 
-                    <div class="video-card group relative aspect-square overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-300 opacity-0 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.15)] transition-colors duration-300 max-md:aspect-[4/3] scale-90 dark:border-slate-700 dark:bg-slate-800" id="card-2">
-                        <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://remtoo.net/slider/A1/Beginner/chapter-1/img/male.webp" alt="Student">
-                        <div class="participant-name absolute bottom-6 left-6 rounded-2xl border border-white bg-white/90 px-5 py-2.5 text-sm font-bold text-slate-800 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-100">
-                            You (Preview)
-                        </div>
+                    <!-- RIGHT: illustration stage -->
+                    <div class="image-section relative flex items-center justify-center opacity-0 lg:justify-center">
+                        <span class="ghost-number pointer-events-none absolute top-[30%] -right-2 text-[10rem] sm:text-[11rem]">03</span>
+
+                        <svg id="illustration" class="relative h-auto w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[440px]" viewBox="0 0 560 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Person thinking beside a big apple, a first-aid kit, a heart with a pulse line, a bandage and a capsule">
+                            <defs>
+                                <linearGradient id="appleGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#f87171"/>
+                                    <stop offset="1" stop-color="#dc2626"/>
+                                </linearGradient>
+                                <linearGradient id="blobGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#818cf8"/>
+                                    <stop offset="1" stop-color="#38bdf8"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- layered backdrop -->
+                            <ellipse cx="305" cy="275" rx="215" ry="200" fill="url(#blobGrad)" opacity="0.14"/>
+                            <circle cx="455" cy="105" r="85" fill="#34d399" opacity="0.12"/>
+                            <circle cx="120" cy="420" r="70" fill="#818cf8" opacity="0.12"/>
+                            <circle cx="105" cy="95" r="6" fill="#10b981" opacity="0.4"/>
+                            <circle cx="525" cy="300" r="5" fill="#f43f5e" opacity="0.4"/>
+                            <path d="M515 200h12M521 194v12" stroke="#6366f1" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+                            <path d="M40 330h10M45 325v10" stroke="#10b981" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+
+                            <!-- thinking character -->
+                            <g id="figure" transform="translate(-16,0)">
+                                <circle cx="92" cy="238" r="25" fill="#f8fafc" stroke="#94a3b8" stroke-width="4"/>
+                                <path d="M92 263c-24 0-38 14-42 34l-4 22h34z" fill="#6366f1"/>
+                                <path d="M92 263c24 0 38 14 42 34l4 22H96z" fill="#4f46e5"/>
+                                <path d="M92 319v58" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
+                                <path d="M92 377l-18 44M92 377l20 44" stroke="#94a3b8" stroke-width="7" stroke-linecap="round"/>
+                                <path d="M126 290c8-14 4-32-10-40" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M116 250a14 14 0 0 1 12 8" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+                                <text x="38" y="180" fill="#6366f1" font-family="Plus Jakarta Sans, sans-serif" font-weight="900" font-size="42">?</text>
+                                <text x="142" y="140" fill="#818cf8" font-family="Plus Jakarta Sans, sans-serif" font-weight="900" font-size="32">?</text>
+                                <text x="10" y="105" fill="#a5b4fc" font-family="Plus Jakarta Sans, sans-serif" font-weight="900" font-size="24">?</text>
+                            </g>
+
+                            <!-- big apple -->
+                            <g id="apple">
+                                <ellipse cx="308" cy="374" rx="86" ry="12" fill="#0f172a" opacity="0.12"/>
+                                <path d="M306 160 C 303 138 312 126 328 118" stroke="#92400e" stroke-width="7" stroke-linecap="round"/>
+                                <path d="M324 132 C 344 106 378 108 386 118 C 376 142 344 150 324 132 Z" fill="#10b981"/>
+                                <path d="M330 132 C 344 124 360 120 374 120" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M308 162 C 272 134 218 154 218 242 C 218 318 262 362 308 362 C 354 362 398 318 398 242 C 398 154 344 134 308 162 Z" fill="url(#appleGrad)"/>
+                                <ellipse cx="262" cy="216" rx="17" ry="30" fill="#ffffff" opacity="0.25" transform="rotate(-18 262 216)"/>
+                                <path d="M262 356 c-26-20-40-36-40-52 a20 20 0 0 1 40-9 a20 20 0 0 1 40 9 c0 16-14 32-40 52 z" fill="#ffffff" opacity="0.85"/>
+                            </g>
+
+                            <!-- heart with pulse -->
+                            <g id="heart">
+                                <path d="M462 250 C 438 230 424 214 424 198 C 424 184 435 176 446 176 C 454 176 459 180 462 186 C 465 180 470 176 478 176 C 489 176 500 184 500 198 C 500 214 486 230 462 250 Z" fill="#f43f5e"/>
+                                <polyline points="434,204 448,204 454,190 460,218 466,196 470,204 490,204" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </g>
+
+                            <!-- first-aid kit -->
+                            <g id="kit">
+                                <rect x="336" y="404" width="160" height="108" rx="14" fill="#0f172a" opacity="0.14"/>
+                                <rect x="386" y="388" width="28" height="16" rx="7" fill="none" stroke="#cbd5e1" stroke-width="5"/>
+                                <rect x="330" y="398" width="160" height="108" rx="14" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                                <rect x="403" y="418" width="14" height="58" rx="4" fill="#ef4444"/>
+                                <rect x="381" y="440" width="58" height="14" rx="4" fill="#ef4444"/>
+                            </g>
+
+                            <!-- bandage -->
+                            <g id="bandage">
+                                <g transform="rotate(-8 95 140)">
+                                    <rect x="50" y="124" width="90" height="32" rx="16" fill="#fde68a" stroke="#fbbf24" stroke-width="2"/>
+                                    <circle cx="72" cy="140" r="2" fill="#f59e0b"/>
+                                    <circle cx="84" cy="132" r="2" fill="#f59e0b"/>
+                                    <circle cx="84" cy="148" r="2" fill="#f59e0b"/>
+                                    <circle cx="96" cy="140" r="2" fill="#f59e0b"/>
+                                    <circle cx="108" cy="132" r="2" fill="#f59e0b"/>
+                                    <circle cx="108" cy="148" r="2" fill="#f59e0b"/>
+                                    <circle cx="120" cy="140" r="2" fill="#f59e0b"/>
+                                </g>
+                            </g>
+
+                            <!-- capsule -->
+                            <g id="capsule">
+                                <g transform="rotate(-18 285 455)">
+                                    <rect x="235" y="438" width="100" height="36" rx="18" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                                    <path d="M253 438 h32 v36 h-32 a18 18 0 0 1 0-36 z" fill="#fb7185"/>
+                                    <line x1="285" y1="438" x2="285" y2="474" stroke="#e2e8f0" stroke-width="2"/>
+                                </g>
+                            </g>
+
+                            <!-- green cross badge -->
+                            <g id="cross-badge">
+                                <circle cx="470" cy="118" r="27" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+                                <rect x="464" y="106" width="12" height="36" rx="3" fill="#10b981"/>
+                                <rect x="452" y="118" width="36" height="12" rx="3" fill="#10b981"/>
+                                <circle cx="492" cy="100" r="7" fill="#ef4444" stroke="#ffffff" stroke-width="2.5"/>
+                            </g>
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -100,37 +251,63 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const cards = document.querySelectorAll('.video-card');
-        const header = document.querySelector('.header-section');
+        const revealEls = document.querySelectorAll('#meta-line, .lesson-label, .hero-title, .hero-subtitle, .idiom-card, #chips-line, .image-section, .ghost-number');
+        const sceneEls = ['#apple', '#heart', '#kit', '#cross-badge', '#figure', '#bandage', '#capsule'];
 
         function playIn() {
             if (!window.gsap) {
-                if (header) {
-                    header.style.opacity = '1';
-                    header.style.transform = 'none';
-                }
-                cards.forEach((card) => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'none';
+                revealEls.forEach((el) => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                });
+                sceneEls.forEach((sel) => {
+                    const el = document.querySelector(sel);
+                    if (el) el.style.opacity = '1';
                 });
                 return;
             }
 
             const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-            tl.to('.header-section', { opacity: 1, y: 0, duration: 1 })
-                .to('.video-card', {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 1,
-                    stagger: 0.2,
-                    clearProps: 'transform'
-                }, '-=0.5');
+            tl.to('#meta-line', { opacity: 1, y: -8, duration: 0.5, ease: 'back.out(1.7)' });
+            tl.to('.lesson-label', { opacity: 1, duration: 0.4 }, '-=0.3');
+            tl.fromTo('.hero-title',
+                { y: 40, opacity: 0, filter: 'blur(10px)' },
+                { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.7 }, '-=0.25');
+            tl.to('.hero-subtitle', { opacity: 1, y: -8, duration: 0.5, ease: 'power3.out' }, '-=0.4');
+            tl.fromTo('.idiom-card',
+                { y: 24, opacity: 0, scale: 0.96 },
+                { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, '-=0.35');
+            tl.to('#chips-line', { opacity: 1, duration: 0.5 }, '-=0.3');
+            tl.to('.ghost-number', { opacity: 1, duration: 0.8 }, '-=0.5');
+            tl.fromTo('.image-section',
+                { opacity: 0, scale: 0.92 },
+                { opacity: 1, scale: 1, duration: 0.8, ease: 'expo.out' }, '-=0.7');
+            tl.fromTo(sceneEls,
+                { opacity: 0, y: 26, scale: 0.9 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.09, ease: 'back.out(1.6)' }, '-=0.55');
+
+            startIdleMotion();
 
             window.resetSlide = () => {
                 tl.pause(0);
-                gsap.set('.header-section, .video-card', { clearProps: 'all' });
+                gsap.killTweensOf(sceneEls.concat(['.ghost-number', '#figure text']));
+                gsap.set('#meta-line, .lesson-label, .hero-title, .hero-subtitle, .idiom-card, #chips-line, .image-section, .ghost-number', { clearProps: 'all' });
+                gsap.set(sceneEls.join(', '), { clearProps: 'all' });
                 tl.restart();
+                startIdleMotion();
             };
+        }
+
+        function startIdleMotion() {
+            if (!window.gsap) return;
+            gsap.to('#apple', { y: -10, rotation: -1.5, duration: 2.6, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+            gsap.to('#heart', { scale: 1.12, transformOrigin: 'center', duration: 0.9, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+            gsap.to('#cross-badge', { y: -7, duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.3 });
+            gsap.to('#figure', { y: -4, duration: 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+            gsap.to('#figure text', { y: -8, opacity: 0.35, duration: 1.3, repeat: -1, yoyo: true, stagger: 0.35, ease: 'sine.inOut' });
+            gsap.to('#bandage', { y: -8, rotation: -11, duration: 2.8, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.6 });
+            gsap.to('#capsule', { y: -5, duration: 2.2, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.15 });
+            gsap.to('#kit', { y: -9, rotation: 1, duration: 2.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.45 });
         }
 
         playIn();
