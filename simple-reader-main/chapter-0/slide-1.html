@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boston English Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui']
+                    }
+                }
+            }
+        };
+    </script>
+    <script>
+        const THEME_STORAGE_KEY = 'editor-theme-preference';
+        const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function getStoredTheme() {
+            try {
+                return localStorage.getItem(THEME_STORAGE_KEY);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function setStoredTheme(theme) {
+            try {
+                localStorage.setItem(THEME_STORAGE_KEY, theme);
+            } catch (error) {
+                // Ignore storage errors and keep runtime-only behavior.
+            }
+        }
+
+
+
+        function updateThemeToggleButton(theme) {
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            if (!themeToggleBtn) return;
+
+            const isDark = theme === 'dark';
+            themeToggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.documentElement.classList.toggle('dark', isDark);
+            updateThemeToggleButton(theme);
+        }
+
+        function resolveInitialTheme() {
+            const storedTheme = getStoredTheme();
+            if (storedTheme === 'dark' || storedTheme === 'light') {
+                return storedTheme;
+            }
+            const systemTheme = colorScheme.matches ? 'dark' : 'light';
+            setStoredTheme(systemTheme);
+            return systemTheme;
+        }
+
+        function toggleThemePreference() {
+            const currentlyDark = document.documentElement.classList.contains('dark');
+            const nextTheme = currentlyDark ? 'light' : 'dark';
+            setStoredTheme(nextTheme);
+            applyTheme(nextTheme);
+        }
+
+        window.toggleThemePreference = toggleThemePreference;
+
+        // Apply on load
+        applyTheme(resolveInitialTheme());
+
+        window.addEventListener('storage', function (event) {
+            if (event.key === THEME_STORAGE_KEY) {
+                const newTheme = event.newValue;
+                if (newTheme === 'dark' || newTheme === 'light') {
+                    applyTheme(newTheme);
+                }
+            }
+        });
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="h-full overflow-x-hidden">
+<div class="isolate relative min-h-[100dvh] overflow-x-hidden overflow-y-auto bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
+    <div class="pointer-events-none fixed inset-0 z-0">
+        <div class="absolute -top-28 -left-28 h-80 w-80 rounded-full bg-indigo-500/15 blur-3xl dark:bg-indigo-500/25"></div>
+        <div class="absolute -bottom-36 -right-28 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-500/20"></div>
+        <div class="absolute left-1/2 top-[85%] -translate-x-1/2 h-[28rem] w-[28rem] rounded-full bg-emerald-500/10 blur-3xl dark:bg-emerald-500/15"></div>
+    </div>
+
+    <div class="relative z-10">
+        <div class="relative min-h-[100dvh] overflow-x-hidden overflow-y-auto">
+            <div class="mx-auto flex min-h-[100dvh] w-full max-w-[1200px] items-center px-6 py-10 lg:px-16 lg:py-16">
+                <div class="slide-content grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+                    <div class="text-section z-10 text-center lg:text-left">
+                        <div class="unit-badge mb-6 inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50 px-5 py-2 text-[0.75rem] font-extrabold uppercase tracking-[0.15em] text-indigo-600 opacity-0 transition-all duration-300 dark:border-indigo-500/30 dark:bg-indigo-500/15 dark:text-indigo-300">
+                            UNIT 01 — INTRODUCTION AND GREETING
+                        </div>
+
+                        <h1 class="hero-title mb-8 text-4xl font-black leading-[1.05] tracking-[-0.04em] opacity-0 sm:text-5xl lg:text-[5.5rem]">
+                            Meet and Greet
+                        </h1>
+                        <p class="hero-subtitle mb-14 max-w-[480px] text-base font-medium leading-[1.6] text-slate-600 opacity-0 sm:text-lg lg:text-xl lg:mx-0 mx-auto dark:text-slate-50">
+                            Welcome, rising stars — let’s get the ball rolling on your English journey!
+                        </p>
+
+                        <div class="flex items-center justify-center gap-6 opacity-0 lg:justify-start" id="cta-line">
+                            <div class="h-px w-20 bg-indigo-200 dark:bg-indigo-800"></div>
+                            <span class="text-xs font-black uppercase tracking-widest text-indigo-400 dark:text-indigo-500">Ready to Begin?</span>
+                        </div>
+                    </div>
+
+                    <div class="image-section relative flex items-center justify-center lg:justify-start">
+                        <button id="start-btn"
+                                class="group relative mx-auto flex items-center gap-4 rounded-[1.2rem] bg-slate-900 px-6 py-4 text-lg font-black text-white shadow-2xl transition-all hover:scale-105 active:scale-95 sm:rounded-[2rem] sm:px-12 sm:py-6 sm:text-2xl lg:mx-0 dark:bg-white dark:text-slate-900 dark:shadow-indigo-500/30">
+                            <span>Start Session</span>
+                            <span class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-[10px] transition-transform group-hover:rotate-12 sm:h-10 sm:w-10 sm:text-sm">⚡</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const startBtn = document.getElementById('start-btn');
+        const revealEls = document.querySelectorAll('.unit-badge, .hero-title, .hero-subtitle, #cta-line, .image-section');
+
+        function goToNextSlide() {
+            try {
+                if (window.parent && typeof window.parent.nextSlide === 'function') {
+                    window.parent.nextSlide();
+                    return;
+                }
+            } catch (e) {}
+
+            try {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'BEC_NAV', action: 'next' }, '*');
+                    return;
+                }
+            } catch (e) {}
+
+            window.location.href = 'slide-2.html';
+        }
+
+        function playIn() {
+            if (!window.gsap) {
+                revealEls.forEach((el) => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                });
+                return;
+            }
+
+            const tl = gsap.timeline();
+            tl.to('.unit-badge', { opacity: 1, y: -10, duration: 0.5, ease: 'back.out(1.7)' });
+            tl.to('.hero-title', { opacity: 1, y: -15, duration: 0.6, ease: 'power4.out' }, '-=0.35');
+            tl.to('.hero-subtitle', { opacity: 1, y: -10, duration: 0.5, ease: 'power3.out' }, '-=0.35');
+            tl.to('#cta-line', { opacity: 1, duration: 0.6 }, '-=0.2');
+
+            window.resetSlide = () => {
+                tl.pause(0);
+                gsap.set('.hero-title, .hero-subtitle, .unit-badge, #cta-line, .image-section, #start-btn', {
+                    clearProps: 'all'
+                });
+                tl.restart();
+            };
+        }
+
+        playIn();
+
+        let isNavigating = false;
+
+        if (startBtn) {
+            startBtn.addEventListener('click', () => {
+                if (isNavigating) return;
+                isNavigating = true;
+
+                if (!window.gsap) {
+                    goToNextSlide();
+                    return;
+                }
+
+                gsap.fromTo(startBtn, { scale: 1 }, { scale: 0.96, duration: 0.10, yoyo: true, repeat: 1 });
+                goToNextSlide();
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boston English Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui']
+                    }
+                }
+            }
+        };
+
+        (function applyInitialTheme() {
+            let useDark = false;
+            try {
+                if (window.parent && window.parent !== window) {
+                    useDark = window.parent.document.documentElement.classList.contains('dark');
+                }
+            } catch (e) {}
+
+            if (!useDark) {
+                const saved = localStorage.getItem('theme-preference');
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                useDark = saved ? saved === 'dark' : prefersDark;
+            }
+
+            document.documentElement.classList.toggle('dark', useDark);
+        })();
+
+        window.setTheme = function setTheme(theme) {
+            const useDark = theme === 'dark';
+            document.documentElement.classList.toggle('dark', useDark);
+            localStorage.setItem('theme-preference', useDark ? 'dark' : 'light');
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @keyframes wave {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
+        .wave-bar { animation: wave 1s ease-in-out infinite; }
+    </style>
+</head>
+<body class="h-full overflow-x-hidden">
+<div class="isolate relative min-h-[100dvh] overflow-x-hidden overflow-y-auto bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
+    <div class="pointer-events-none fixed inset-0 z-0">
+        <div class="absolute -top-28 -left-28 h-80 w-80 rounded-full bg-indigo-500/15 blur-3xl dark:bg-indigo-500/25"></div>
+        <div class="absolute -bottom-36 -right-28 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-500/20"></div>
+        <div class="absolute left-1/2 top-[85%] -translate-x-1/2 h-[28rem] w-[28rem] rounded-full bg-emerald-500/10 blur-3xl dark:bg-emerald-500/15"></div>
+    </div>
+
+    <div class="relative z-10">
+        <div class="relative min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto">
+            <div class="mx-auto flex min-h-[100dvh] w-full max-w-[1100px] flex-col items-center justify-center gap-10 px-6 py-10">
+                <div class="header-section -translate-y-5 text-center opacity-0">
+                    <span class="inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.3em] text-indigo-500 dark:border-indigo-800/50 dark:bg-indigo-900/30 dark:text-indigo-400">
+                        SLIDE 02 — HELLO! CAN YOU INTRODUCE YOURSELF?
+                    </span>
+
+                    <h1 class="mt-6 mb-8 text-3xl font-black tracking-tight text-slate-900 transition-colors sm:text-4xl md:text-5xl dark:text-slate-100">
+                        Introducing yourself
+                    </h1>
+                </div>
+
+                <div class="video-grid grid w-full grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+                    <div class="video-card group relative aspect-square overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-300 opacity-0 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.15)] transition-colors duration-300 max-md:aspect-[4/3] scale-90 dark:border-slate-700 dark:bg-slate-800" id="card-1">
+                        <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://remtoo.net/slider/A1/Beginner/chapter-1/img/female.webp" alt="Instructor">
+                        <div class="participant-name absolute bottom-6 left-6 rounded-2xl border border-white bg-white/90 px-5 py-2.5 text-sm font-bold text-slate-800 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-100">
+                            Tutor
+                        </div>
+                        <div class="mic-wave absolute right-6 top-6 flex h-[14px] items-end gap-[3px] rounded-lg bg-white/90 p-2 backdrop-blur transition-colors duration-300 dark:bg-slate-900/90">
+                            <div class="wave-bar w-[3px] rounded-[1.5px] bg-indigo-500" style="animation-delay: 0.1s"></div>
+                            <div class="wave-bar w-[3px] rounded-[1.5px] bg-indigo-500" style="animation-delay: 0.3s"></div>
+                            <div class="wave-bar w-[3px] rounded-[1.5px] bg-indigo-500" style="animation-delay: 0.2s"></div>
+                        </div>
+                    </div>
+
+                    <div class="video-card group relative aspect-square overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-300 opacity-0 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.15)] transition-colors duration-300 max-md:aspect-[4/3] scale-90 dark:border-slate-700 dark:bg-slate-800" id="card-2">
+                        <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://remtoo.net/slider/A1/Beginner/chapter-1/img/male.webp" alt="Student">
+                        <div class="participant-name absolute bottom-6 left-6 rounded-2xl border border-white bg-white/90 px-5 py-2.5 text-sm font-bold text-slate-800 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-100">
+                            You (Preview)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.video-card');
+        const header = document.querySelector('.header-section');
+
+        function playIn() {
+            if (!window.gsap) {
+                if (header) {
+                    header.style.opacity = '1';
+                    header.style.transform = 'none';
+                }
+                cards.forEach((card) => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'none';
+                });
+                return;
+            }
+
+            const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+            tl.to('.header-section', { opacity: 1, y: 0, duration: 1 })
+                .to('.video-card', {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1,
+                    stagger: 0.2,
+                    clearProps: 'transform'
+                }, '-=0.5');
+
+            window.resetSlide = () => {
+                tl.pause(0);
+                gsap.set('.header-section, .video-card', { clearProps: 'all' });
+                tl.restart();
+            };
+        }
+
+        playIn();
+    });
+</script>
+</body>
+</html>
