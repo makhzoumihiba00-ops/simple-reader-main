@@ -20,9 +20,12 @@
             <p class="bec-subtitle">Listen and read the conversation</p>
         </header>
 
-        <div class="bec-video-wrap" id="video-mount" style="flex:0 0 auto;"></div>
+        <div class="bec-video-wrap" id="video-mount" style="flex:0 0 auto; margin-bottom: clamp(12px, 2.2vh, 22px);"></div>
 
-        <div class="bec-dialogue-card" id="dialogue"></div>
+        <div class="bec-dialogue-card" style="justify-content:flex-start;">
+            <div class="bec-dialogue-cols" id="dialogue"></div>
+        </div>
+        <div class="bec-vocab-pager" id="d-pager" style="display:none;"></div>
         <p class="bec-footnote">Notice the polite phrases in bold.</p>
     </main>
 </div>
@@ -39,30 +42,99 @@
     var MEDIA_SRC = '';
 
     var DIALOGUE = [
-        { who: 'Teller', html: 'Good morning. How can I help you?' },
-        { who: 'Customer', html: "Hello. <strong>I'd like to</strong> deposit some money, <strong>please</strong>." },
-        { who: 'Teller', html: '<strong>Of course.</strong> Do you have your account number?' },
-        { who: 'Customer', html: 'Yes, here it is.' },
-        { who: 'Teller', html: "Thank you. I'll deposit $200 into your account." },
-        { who: 'Customer', html: 'Can I also get the receipt?' },
-        { who: 'Teller', html: '<strong>Of course. Here you are.</strong>' },
-        { who: 'Customer', html: '<strong>Thank you very much.</strong>' }
+        { who: 'Bank Employee', html: 'Good morning.' },
+        { who: 'Customer', html: 'Good morning, sir.' },
+        { who: 'Bank Employee', html: '<strong>How can I help you today?</strong>' },
+        { who: 'Customer', html: "<strong>I'd like to open</strong> a new savings account." },
+        { who: 'Bank Employee', html: 'Sure. Do you have your ID card with you?' },
+        { who: 'Customer', html: '<strong>Yes, here it is.</strong>' },
+        { who: 'Bank Employee', html: 'Thank you. <strong>Please fill out this form.</strong>' },
+        { who: 'Customer', html: 'Okay. Do I need to give a photo too?' },
+        { who: 'Bank Employee', html: 'Yes. One passport-size photo is required.' },
+        { who: 'Customer', html: 'All right. I have one with me.' },
+        { who: 'Bank Employee', html: 'Perfect. How much would you like to deposit today?' },
+        { who: 'Customer', html: "I'd like to deposit $500." },
+        { who: 'Bank Employee', html: 'No problem. <strong>Please hand me the cash.</strong>' },
+        { who: 'Customer', html: '<strong>Here you go.</strong>' },
+        { who: 'Bank Employee', html: "Thank you. I'll enter the details into the system." },
+        { who: 'Customer', html: 'How long will it take to get my account active?' },
+        { who: 'Bank Employee', html: "Just a few minutes. You'll also receive an ATM card soon." },
+        { who: 'Customer', html: 'Great. <strong>Thank you for your help.</strong>' }
     ];
+
+    var stepIdx = 0;
+    var narrowMq = window.matchMedia('(max-width: 699px)');
 
     document.addEventListener('DOMContentLoaded', function () {
         var player = new BEC.VideoPlayer(document.getElementById('video-mount'), { src: MEDIA_SRC, small: true });
 
-        var dialogue = document.getElementById('dialogue');
-        DIALOGUE.forEach(function (line, i) {
-            var row = BEC.el('div', 'bec-dline');
-            row.appendChild(BEC.el('span', 'bec-dspeaker ' + (i % 2 === 0 ? 'bec-sp-a' : 'bec-sp-b'), line.who));
-            var text = BEC.el('span', 'bec-dtext');
-            text.innerHTML = line.html;
-            row.appendChild(text);
-            dialogue.appendChild(row);
+        var list = document.getElementById('dialogue');
+        var pager = document.getElementById('d-pager');
+
+        function stepSize() {
+            /* fit phrases to the space left under title + video + pager.
+               window.innerHeight inside the slide iframe IS the stage height. */
+            var w = window.innerWidth;
+            var stage = Math.max(320, window.innerHeight);
+            var vidW = Math.min(w - 40, 560, Math.max(140, (stage - 400) * 1.7778));
+            var vidH = vidW * 9 / 16;
+            var fontPx = Math.max(17, Math.min(22, stage * 0.028));
+            var lineH = fontPx * 1.45 + Math.max(10, stage * 0.024);
+            var avail = stage - 185 - vidH;
+            var n = Math.floor(avail / lineH);
+            return Math.max(3, Math.min(9, n));
+        }
+
+        function render() {
+            list.innerHTML = '';
+            pager.innerHTML = '';
+            var STEP = stepSize();
+            var pages = Math.ceil(DIALOGUE.length / STEP);
+            if (stepIdx >= pages) stepIdx = 0;
+            var lines = DIALOGUE.slice(stepIdx * STEP, stepIdx * STEP + STEP);
+
+            lines.forEach(function (line, i) {
+                var idx = stepIdx * STEP + i;
+                var row = BEC.el('div', 'bec-dline');
+                row.appendChild(BEC.el('span', 'bec-dspeaker ' + (idx % 2 === 0 ? 'bec-sp-a' : 'bec-sp-b'), line.who));
+                var text = BEC.el('span', 'bec-dtext');
+                text.innerHTML = line.html;
+                row.appendChild(text);
+                list.appendChild(row);
+            });
+
+            if (pages > 1) {
+                pager.style.display = '';
+                var prev = BEC.el('button', 'bec-btn bec-btn-ghost', '‹');
+                prev.type = 'button';
+                prev.setAttribute('aria-label', 'Previous lines');
+                prev.disabled = stepIdx === 0;
+                prev.addEventListener('click', function () { stepIdx--; render(); });
+                var label = BEC.el('span', null, (stepIdx + 1) + ' / ' + pages);
+                var next = BEC.el('button', 'bec-btn bec-btn-ghost', '›');
+                next.type = 'button';
+                next.setAttribute('aria-label', 'More lines');
+                next.disabled = stepIdx === pages - 1;
+                next.addEventListener('click', function () { stepIdx++; render(); });
+                pager.appendChild(prev);
+                pager.appendChild(label);
+                pager.appendChild(next);
+            } else {
+                pager.style.display = 'none';
+            }
+        }
+
+        narrowMq.addEventListener('change', function () { stepIdx = 0; render(); });
+        var resizeTimer = null;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () { stepIdx = 0; render(); }, 200);
         });
+        render();
 
         window.resetSlide = function () {
+            stepIdx = 0;
+            render();
             player.stop();
         };
         window.stopSlideAudio = function () {

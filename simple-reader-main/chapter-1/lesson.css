@@ -664,7 +664,7 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
     box-shadow: var(--shadow);
 }
 .bec-video.bec-video-sm {
-    width: min(100%, 540px, calc((100dvh - 340px) * 1.7778));
+    width: min(100%, 560px, calc((100dvh - 400px) * 1.7778));
 }
 .bec-video video {
     position: absolute;
@@ -839,6 +839,7 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
     align-items: center;
     justify-content: center;
     gap: 12px;
+    margin-top: clamp(6px, 1.2vh, 12px);
     font-size: 15px;
     font-weight: 800;
     color: var(--muted);
@@ -1013,7 +1014,7 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
 .bec-dialogue-card {
     flex: 1 1 auto;
     min-height: 0;
-    width: min(680px, 100%);
+    width: min(880px, 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1025,24 +1026,37 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
     padding: clamp(8px, 1.8vh, 18px) clamp(12px, 2.2vw, 26px);
     overflow: hidden;
 }
+.bec-dialogue-cols {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: clamp(10px, 2.6vh, 24px);
+}
 .bec-dline {
     display: flex;
     align-items: baseline;
-    gap: clamp(8px, 1.4vw, 14px);
-    font-size: clamp(14.5px, 2.3vh, 18.5px);
-    line-height: 1.4;
+    gap: clamp(10px, 1.6vw, 18px);
+    font-size: clamp(17px, 2.8vh, 22px);
+    line-height: 1.45;
 }
 .bec-dspeaker {
-    flex: 0 0 clamp(64px, 9vw, 86px);
-    font-size: clamp(13px, 1.9vh, 15px);
+    flex: 0 0 auto;
+    min-width: clamp(60px, 10vw, 104px);
+    font-size: clamp(13.5px, 2vh, 16px);
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 .bec-dspeaker.bec-sp-a { color: var(--accent); }
 .bec-dspeaker.bec-sp-b { color: var(--muted); }
 .bec-dtext { font-weight: 600; color: var(--text); }
 .bec-dtext strong { font-weight: 800; color: var(--accent); }
+
+/* wide screens keep the single-column stack — phrases under phrases */
+.bec-dline { break-inside: avoid; }
 
 /* ---------- phrase rows (new language) ---------- */
 .bec-phrase-list {

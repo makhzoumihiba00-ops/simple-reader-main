@@ -84,22 +84,28 @@
         var quiz = new BEC.Quiz(document.getElementById('quiz-mount'), {
             questions: [
                 {
-                    text: 'How much is the total due?',
-                    options: ['$47.38', '$44.80', '$2.58', '$47.83'],
-                    answer: 0,
-                    hint: 'Look at the bold total under the charges.'
+                    text: 'What service is this bill for?',
+                    options: ['Electricity service', 'Water service', 'Cable TV service', 'Internet service'],
+                    answer: 2,
+                    hint: 'Look at the name at the top of the bill.'
                 },
                 {
-                    text: 'When is the bill due?',
-                    options: ['01-03-03', '01/31/03', '01/01/03', '03-01-03'],
-                    answer: 0,
+                    text: 'What month of the year is the billing period?',
+                    options: ['March', 'January', 'February', 'April'],
+                    answer: 1,
+                    hint: 'The billing period starts 01/01/03.'
+                },
+                {
+                    text: 'When is this bill due?',
+                    options: ['January 1, 2003', 'January 31, 2003', 'March 1, 2003', 'January 3, 2003'],
+                    answer: 3,
                     hint: "Find 'Due Date' on the bill."
                 },
                 {
-                    text: 'How much is the monthly service charge?',
-                    options: ['$44.80', '$47.38', '$2.58', '$4.48'],
+                    text: 'What is the account number?',
+                    options: ['54789-12378', '54789-12387', '54879-12378', '54798-12378'],
                     answer: 0,
-                    hint: "Find 'Monthly Service Charge' on the bill."
+                    hint: 'Check the numbers carefully.'
                 }
             ]
         });
