@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete the sentences with the words in the box</title>
+    <title>Fill in the blanks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     <div class="bec-glow"></div>
     <main class="bec-main">
         <header class="bec-header" style="margin-bottom:5px;">
-            <h1 class="bec-title" style="font-size:clamp(21px,3.55vh,31px);">Complete the sentences with the <span class="bec-title-accent">words in the box</span></h1>
+            <h1 class="bec-title" style="font-size:clamp(21px,3.55vh,31px);">Fill in the blanks with the <span class="bec-title-accent">correct word</span></h1>
         </header>
 
         <div class="bec-bank" id="word-bank"></div>
@@ -33,19 +33,30 @@
 </div>
 
 <script>
-    var BANK = ['bill', 'charge', 'receipt', 'change', 'amount', 'deposit'];
+    var BANK = ['active', 'computer system', 'cash', 'form', 'account', 'email', 'signature', 'deposit', 'ID card'];
 
-    /* before/after text around each blank + correct word (from the lesson) */
+    /* Each sentence: parts = text around the blanks; answers = one word per blank.
+       A sentence with N blanks has N+1 parts. */
     var SENTENCES = [
-        { before: 'The waiter brought the', after: 'after we paid.', answer: 'receipt' },
-        { before: 'Is there an extra', after: 'for using the card?', answer: 'charge' },
-        { before: 'The total', after: 'on the bill was $58.', answer: 'amount' },
-        { before: 'I paid with $100 and got $12', after: '.', answer: 'change' },
-        { before: 'You must pay the electricity', after: 'today.', answer: 'bill' },
-        { before: 'I went to the bank to', after: 'my money.', answer: 'deposit' }
+        { parts: ['The customer went to the bank to open a new', '.'], answers: ['account'] },
+        { parts: ['The worker asked for his', 'to check who he was.'], answers: ['ID card'] },
+        { parts: ['He filled out a', 'and gave a', '.'], answers: ['form', 'signature'] },
+        { parts: ['Then the worker asked how much he wanted to', '.'], answers: ['deposit'] },
+        { parts: ['He gave $500 in', '.'], answers: ['cash'] },
+        { parts: ['The worker put everything into the', '.'], answers: ['computer system'] },
+        { parts: ['He said the account would be', 'soon.'], answers: ['active'] },
+        { parts: ['He also said the customer would get an', 'soon.'], answers: ['email'] }
     ];
 
-    var filled = [];   // index of word placed in each sentence, or null
+    var BLANKS = [];   /* flat list: { word: correct answer } in reading order (1..9) */
+    SENTENCES.forEach(function (s) {
+        s.answers.forEach(function (a) { BLANKS.push({ answer: a }); });
+    });
+
+    var filled = [];   /* BANK index placed in each blank (global order), or null */
+    var selectNextBlank = null;
+
+    function bankUsed(wi) { return filled.indexOf(wi) !== -1; }
 
     function renderBank() {
         var bank = document.getElementById('word-bank');
@@ -53,59 +64,60 @@
         BANK.forEach(function (word, wi) {
             var chip = BEC.el('button', 'bec-chip', word);
             chip.type = 'button';
-            var used = filled.indexOf(wi) !== -1;
-            chip.disabled = used;
+            chip.disabled = bankUsed(wi);
             chip.addEventListener('click', function () { placeWord(wi); });
             bank.appendChild(chip);
         });
     }
 
     function renderSentences(state) {
-        /* state: null (neutral) | 'checked' | 'revealed' */
         var box = document.getElementById('sentences');
         box.innerHTML = '';
+        var blankIdx = 0;
         SENTENCES.forEach(function (s, si) {
             var row = BEC.el('div', 'bec-sentence');
-            row.appendChild(BEC.el('span', 'bec-sentence-num', String(si + 1)));
-            row.appendChild(BEC.el('span', null, s.before));
-            var blank = BEC.el('button', 'bec-blank');
-            blank.type = 'button';
-            var wi = filled[si];
-            if (wi != null) {
-                blank.textContent = BANK[wi];
-                blank.classList.add('is-filled');
-                if (state === 'checked' || state === 'revealed') {
-                    blank.disabled = true;
-                    if (BANK[wi] === s.answer) blank.classList.add('is-correct');
-                    else blank.classList.add('is-wrong');
-                } else {
-                    blank.addEventListener('click', function () { removeWord(si); });
+            s.parts.forEach(function (part, pi) {
+                if (pi > 0) {
+                    /* blank pi-1 of this sentence */
+                    var globalIdx = blankIdx;
+                    blankIdx++;
+                    var blank = BEC.el('button', 'bec-blank');
+                    blank.type = 'button';
+                    var wi = filled[globalIdx];
+                    if (wi != null) {
+                        blank.textContent = BANK[wi];
+                        blank.classList.add('is-filled');
+                        if (state === 'checked' || state === 'revealed') {
+                            blank.disabled = true;
+                            if (BANK[wi] === s.answers[pi - 1]) blank.classList.add('is-correct');
+                            else blank.classList.add('is-wrong');
+                        } else {
+                            blank.addEventListener('click', function () { removeWord(globalIdx); });
+                        }
+                    } else if (state === 'revealed') {
+                        blank.textContent = s.answers[pi - 1];
+                        blank.classList.add('is-filled', 'is-correct');
+                        filled[globalIdx] = BANK.indexOf(s.answers[pi - 1]);
+                    } else {
+                        blank.textContent = (globalIdx + 1);
+                        blank.style.color = 'var(--muted)';
+                        blank.style.fontWeight = '800';
+                        blank.addEventListener('click', function () { selectNextBlank = globalIdx; });
+                    }
+                    row.appendChild(blank);
                 }
-            } else {
-                blank.textContent = '';
-                if (state === 'revealed') {
-                    var wordIdx = BANK.indexOf(s.answer);
-                    blank.textContent = s.answer;
-                    blank.classList.add('is-filled', 'is-correct');
-                    filled[si] = wordIdx;
-                } else {
-                    blank.addEventListener('click', function () { selectNextBlank = si; });
-                }
-            }
-            row.appendChild(blank);
-            row.appendChild(BEC.el('span', null, s.after));
+                if (part) row.appendChild(BEC.el('span', null, part));
+            });
             box.appendChild(row);
         });
     }
-
-    var selectNextBlank = null;
 
     function placeWord(wi) {
         var target = null;
         if (selectNextBlank != null && filled[selectNextBlank] == null) {
             target = selectNextBlank;
         } else {
-            for (var i = 0; i < SENTENCES.length; i++) {
+            for (var i = 0; i < BLANKS.length; i++) {
                 if (filled[i] == null) { target = i; break; }
             }
         }
@@ -115,8 +127,8 @@
         refresh(null);
     }
 
-    function removeWord(si) {
-        filled[si] = null;
+    function removeWord(globalIdx) {
+        filled[globalIdx] = null;
         refresh(null);
     }
 
@@ -128,9 +140,11 @@
         fb.textContent = '';
         if (state === 'checked') {
             var correct = 0;
-            SENTENCES.forEach(function (s, si) { if (filled[si] != null && BANK[filled[si]] === s.answer) correct++; });
-            fb.textContent = 'You got ' + correct + ' of ' + SENTENCES.length + ' correct.';
-            fb.classList.add(correct === SENTENCES.length ? 'bec-ok' : 'bec-bad');
+            BLANKS.forEach(function (b, i) {
+                if (filled[i] != null && BANK[filled[i]] === b.answer) correct++;
+            });
+            fb.textContent = 'You got ' + correct + ' of ' + BLANKS.length + ' correct.';
+            fb.classList.add(correct === BLANKS.length ? 'bec-ok' : 'bec-bad');
         } else if (state === 'revealed') {
             fb.textContent = 'Answers shown.';
             fb.classList.add('bec-bad');
@@ -138,7 +152,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        filled = SENTENCES.map(function () { return null; });
+        filled = BLANKS.map(function () { return null; });
         refresh(null);
 
         document.getElementById('check-btn').addEventListener('click', function () {
@@ -151,18 +165,18 @@
             refresh('checked');
         });
         document.getElementById('show-btn').addEventListener('click', function () {
-            filled = SENTENCES.map(function () { return null; });
+            filled = BLANKS.map(function () { return null; });
             refresh('revealed');
-            renderBank(); // chips marked used after reveal fill
+            renderBank();
         });
         document.getElementById('reset-btn').addEventListener('click', function () {
-            filled = SENTENCES.map(function () { return null; });
+            filled = BLANKS.map(function () { return null; });
             selectNextBlank = null;
             refresh(null);
         });
 
         window.resetSlide = function () {
-            filled = SENTENCES.map(function () { return null; });
+            filled = BLANKS.map(function () { return null; });
             selectNextBlank = null;
             refresh(null);
         };

@@ -343,6 +343,12 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
 }
 .bec-options.bec-options-tf { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 460px; margin: 0 auto; width: 100%; }
 .bec-options.bec-options-row { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+/* odd option count (A, B, C): center the last option under the pair */
+.bec-options .bec-opt:nth-child(3):last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(50%, 320px);
+}
 
 .bec-opt {
     display: flex;
