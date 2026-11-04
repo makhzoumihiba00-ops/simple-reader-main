@@ -1178,6 +1178,23 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
     .bec-seg { padding: 3px 10px; }
     .bec-seg + .bec-seg { border-left: none; }
     .bec-controls .bec-btn { flex: 1 1 40%; }
+    .bec-slide { padding: 8px 10px 10px; }
+    .bec-main { width: 100%; }
+    .bec-card, .bec-review-card { border-radius: 14px; padding: 10px 12px; }
+    .bec-card-mid { overflow-y: auto; justify-content: flex-start; }
+    .bec-question { font-size: 17px; margin-bottom: 10px; }
+    .bec-options { gap: 7px; }
+    .bec-opt { min-height: 42px; font-size: 15px; padding: 7px 10px; }
+    .bec-review-list { overflow-y: auto; justify-content: flex-start; }
+    .bec-review-q { gap: 7px; font-size: 14px; }
+    .bec-review-q .bec-btn { font-size: 12px; padding: 5px 8px; }
+    .bec-review-a { font-size: 13px; margin-left: 29px; }
+    .bec-overlay { padding: 10px; }
+    .bec-overlay-card { max-height: calc(100% - 8px); }
+    .bec-script-body { overflow-y: auto; }
+    .bec-script-line { font-size: 13px; }
+    .bec-obj-grid { gap: 8px; }
+    .bec-disc, .bec-obj { padding: 8px 10px; }
 }
 
 /* short stages (laptop 768px-high windows, phone landscape) */

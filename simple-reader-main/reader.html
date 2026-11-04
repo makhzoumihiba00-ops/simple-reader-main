@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Boston English Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -60,6 +60,19 @@
             const isDark = theme === 'dark';
             document.documentElement.classList.toggle('dark', isDark);
             updateThemeToggleButton(theme);
+            syncSlidesTheme(theme);
+        }
+
+        function syncSlidesTheme(theme) {
+            document.querySelectorAll('#slides-wrapper iframe').forEach(function (iframe) {
+                try {
+                    if (iframe.contentWindow && typeof iframe.contentWindow.setTheme === 'function') {
+                        iframe.contentWindow.setTheme(theme);
+                    }
+                } catch (error) {
+                    // Ignore iframe timing errors; iframe.onload also applies the theme.
+                }
+            });
         }
 
         function resolveInitialTheme() {
@@ -514,6 +527,91 @@
 
         .translate-x-full { transform: translateX(100%); }
         .translate-x-0 { transform: translateX(0); }
+
+        html, body { width: 100%; min-width: 0; }
+        .zoom-container { transform-origin: center; }
+
+        @media (max-width: 639px) {
+            header.glass-panel {
+                height: 58px;
+                padding-left: max(10px, env(safe-area-inset-left));
+                padding-right: max(10px, env(safe-area-inset-right));
+            }
+
+            footer.glass-panel {
+                height: 58px;
+                padding-left: max(8px, env(safe-area-inset-left));
+                padding-right: max(8px, env(safe-area-inset-right));
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
+            .slide-container {
+                height: calc(100dvh - 116px - env(safe-area-inset-bottom));
+            }
+
+            header.glass-panel > div:last-child { gap: 6px; }
+            header.glass-panel .btn-action,
+            header.glass-panel button { min-height: 36px; }
+            header.glass-panel h1 { font-size: 14px; }
+
+            footer.glass-panel > div { gap: 6px !important; }
+            footer.glass-panel .btn-action {
+                min-width: 36px;
+                min-height: 36px;
+                padding-left: 9px !important;
+                padding-right: 9px !important;
+            }
+
+            #slide-index-footer {
+                padding-left: 6px !important;
+                padding-right: 6px !important;
+                font-size: 8px !important;
+                white-space: nowrap;
+            }
+
+            .cue-tooltip {
+                position: fixed;
+                top: 68px;
+                left: 12px !important;
+                right: 12px;
+                width: auto;
+                max-height: calc(100dvh - 150px);
+                overflow-y: auto;
+                transform: translateY(20px);
+            }
+
+            .group:hover .cue-tooltip {
+                transform: translateY(0);
+            }
+
+            #sidebar-drawer { width: min(88vw, 320px); }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) {
+            header.glass-panel {
+                height: 64px;
+            }
+
+            footer.glass-panel {
+                height: 64px;
+            }
+
+            .slide-container {
+                height: calc(100dvh - 128px);
+            }
+
+            .cue-tooltip {
+                width: min(360px, calc(100vw - 24px));
+                max-height: calc(100dvh - 150px);
+                overflow-y: auto;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 520px) {
+            header.glass-panel { height: 52px; }
+            footer.glass-panel { height: 52px; }
+            .slide-container { height: calc(100dvh - 104px); }
+        }
     </style>
 </head>
 <body class="flex flex-col h-[100dvh]">
