@@ -30,24 +30,21 @@
 
 <template id="bill-template">
     <div class="bec-bill-head">
-        <span class="bec-bill-brand">CITY CABLE TV</span>
+        <span class="bec-bill-brand">ESL CABLE TV</span>
         <span class="bec-bill-tag">Statement</span>
     </div>
     <div class="bec-bill-body">
-        <div class="bec-bill-row"><span>Account Holder</span><span>Maria Gomez</span></div>
-        <div class="bec-bill-row"><span>Account Number</span><span>4471-882</span></div>
-        <div class="bec-bill-row"><span>Billing Period</span><span>March 1 – March 31, 2024</span></div>
-        <div class="bec-bill-row"><span>Service Address</span><span>12 River Road, Apt 4</span></div>
+        <div class="bec-bill-row"><span>Service Name</span><span>ESL Cable TV Service</span></div>
+        <div class="bec-bill-row"><span>Account Number</span><span>54789-12378</span></div>
+        <div class="bec-bill-row"><span>Billing Period</span><span>01/01/03 – 01/31/03</span></div>
+        <div class="bec-bill-row"><span>Due Date</span><span>01-03-03</span></div>
         <div class="bec-bill-sep"></div>
-        <div class="bec-bill-row"><span>Basic Cable Package</span><span>$45.00</span></div>
-        <div class="bec-bill-row"><span>Premium Channels</span><span>$18.50</span></div>
-        <div class="bec-bill-row"><span>Equipment Rental</span><span>$5.00</span></div>
-        <div class="bec-bill-row"><span>Taxes</span><span>$4.25</span></div>
+        <div class="bec-bill-row"><span>Monthly Service Charge</span><span>$44.80</span></div>
+        <div class="bec-bill-row"><span>Taxes</span><span>$2.58</span></div>
         <div class="bec-bill-total">
-            <div class="bec-bill-row"><span>TOTAL DUE</span><span>$72.75</span></div>
+            <div class="bec-bill-row"><span>TOTAL DUE</span><span>$47.38</span></div>
         </div>
-        <div class="bec-bill-row"><span>Due Date</span><span>April 15, 2024</span></div>
-        <p class="bec-bill-note">Please pay by the due date to avoid late fees.</p>
+        <p class="bec-bill-note">Message: Thank You.</p>
     </div>
 </template>
 
@@ -88,21 +85,21 @@
             questions: [
                 {
                     text: 'How much is the total due?',
-                    options: ['$72.75', '$45.00', '$18.50'],
+                    options: ['$47.38', '$44.80', '$2.58', '$47.83'],
                     answer: 0,
                     hint: 'Look at the bold total under the charges.'
                 },
                 {
-                    text: 'When does Maria have to pay the bill?',
-                    options: ['March 31, 2024', 'April 15, 2024', 'April 30, 2024'],
-                    answer: 1,
+                    text: 'When is the bill due?',
+                    options: ['01-03-03', '01/31/03', '01/01/03', '03-01-03'],
+                    answer: 0,
                     hint: "Find 'Due Date' on the bill."
                 },
                 {
-                    text: 'How much are the Premium Channels?',
-                    options: ['$5.00', '$4.25', '$18.50'],
-                    answer: 2,
-                    hint: "Find 'Premium Channels' in the charges list."
+                    text: 'How much is the monthly service charge?',
+                    options: ['$44.80', '$47.38', '$2.58', '$4.48'],
+                    answer: 0,
+                    hint: "Find 'Monthly Service Charge' on the bill."
                 }
             ]
         });

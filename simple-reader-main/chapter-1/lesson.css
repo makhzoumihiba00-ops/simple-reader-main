@@ -491,13 +491,16 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
     line-height: 1.45;
 }
 .bec-script-speaker {
-    flex: 0 0 74px;
+    flex: 0 0 auto;
+    min-width: clamp(40px, 6vw, 68px);
     font-weight: 800;
     font-size: clamp(13.5px, 1.95vh, 16px);
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 0.04em;
+    white-space: nowrap;
 }
+.bec-script-speaker::after { content: ':'; }
 .bec-script-speaker.bec-speaker-b { color: var(--muted); }
 .bec-script-text { font-weight: 500; color: var(--text); }
 .bec-overlay-pager {
@@ -523,6 +526,48 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
     gap: clamp(7px, 1.5vh, 14px);
     width: min(620px, 100%);
 }
+
+/* objectives with illustration cards ("objectives of the day") */
+.bec-obj-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 26px);
+    width: min(1000px, 100%);
+    align-content: center;
+}
+.bec-obj-card {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+.bec-obj-card .bec-obj-art {
+    flex: 0 0 auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid var(--border);
+}
+.bec-obj-card-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(10px, 1.6vw, 16px);
+    padding: clamp(10px, 1.9vh, 18px) clamp(12px, 2vw, 20px);
+}
+@media (max-width: 640px), (max-height: 560px) {
+    .bec-obj-grid { grid-template-columns: 1fr; width: min(520px, 100%); }
+    .bec-obj-card { flex-direction: row; align-items: stretch; }
+    .bec-obj-card .bec-obj-art { width: 38%; height: 100%; border-bottom: none; border-right: 1px solid var(--border); }
+}
+
 .bec-obj {
     display: flex;
     align-items: center;
@@ -939,22 +984,22 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
     min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: clamp(3px, 0.8vh, 7px);
-    padding: clamp(8px, 1.6vh, 16px) clamp(10px, 1.6vw, 18px);
+    justify-content: space-evenly;
+    gap: clamp(6px, 1.5vh, 14px);
+    padding: clamp(12px, 2.2vh, 22px) clamp(12px, 1.8vw, 20px);
     font-size: clamp(13.5px, 2.05vh, 17px);
     font-weight: 600;
     overflow: hidden;
 }
-.bec-bill-row { display: flex; justify-content: space-between; gap: 12px; line-height: 1.35; }
+.bec-bill-row { display: flex; justify-content: space-between; gap: 12px; line-height: 1.4; padding: 2px 0; }
 .bec-bill-row span:first-child { color: var(--muted); font-weight: 600; }
 .bec-bill-row span:last-child { color: var(--text); font-weight: 700; text-align: right; }
 .bec-bill-sep { border-top: 1px dashed var(--border); }
 .bec-bill-total {
-    margin-top: auto;
     background: var(--accent-soft);
     border: 1px solid var(--accent-border);
     border-radius: 10px;
-    padding: 7px 12px;
+    padding: clamp(8px, 1.4vh, 12px) 12px;
 }
 .bec-bill-total .bec-bill-row span { color: var(--accent) !important; font-weight: 800; }
 .bec-bill-note { font-size: clamp(12px, 1.75vh, 14px); font-style: italic; color: var(--muted); font-weight: 500; }

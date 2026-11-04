@@ -44,16 +44,17 @@
     /* Transcript shown by the "Read Script" button (lesson dialogue). */
     var SCRIPT_PAGES = [
         [
-            { speaker: 'Teller', text: 'Good morning. How can I help you?' },
-            { speaker: 'Customer', text: "Hello. I'd like to deposit some money, please.", b: true },
-            { speaker: 'Teller', text: 'Of course. Do you have your account number?' },
-            { speaker: 'Customer', text: 'Yes, here it is.' }
+            { speaker: 'Bank Teller', text: 'Hello. How can I help you today?' },
+            { speaker: 'Customer', text: 'Hi. I need to pay my electric bill.', b: true },
+            { speaker: 'Bank Teller', text: 'Sure. Do you have your bill with you?' },
+            { speaker: 'Customer', text: 'Yes. Here it is.', b: true },
+            { speaker: 'Bank Teller', text: 'Thank you. Your total is $45.60. Will you pay by cash or card?' }
         ],
         [
-            { speaker: 'Teller', text: "Thank you. I'll deposit $200 into your account." },
-            { speaker: 'Customer', text: 'Can I also get the receipt?' },
-            { speaker: 'Teller', text: 'Of course. Here you are.', b: true },
-            { speaker: 'Customer', text: 'Thank you very much.', b: true }
+            { speaker: 'Customer', text: "I'll pay by card, please.", b: true },
+            { speaker: 'Bank Teller', text: 'OK. Please insert your card here. … All done! Here is your receipt.' },
+            { speaker: 'Customer', text: 'Great, thank you!', b: true },
+            { speaker: 'Bank Teller', text: "You're welcome. Have a nice day!" }
         ]
     ];
 

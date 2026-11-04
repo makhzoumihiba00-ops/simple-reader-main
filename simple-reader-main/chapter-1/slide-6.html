@@ -28,34 +28,34 @@
         var quiz = new BEC.Quiz(document.getElementById('quiz-mount'), {
             questions: [
                 {
-                    text: 'Where does the video take place?',
-                    options: ['In a supermarket', 'At the bank', 'At home', 'In a shop'],
+                    text: 'Why does the customer go to the bank?',
+                    options: ['To open a new account', 'To pay the electric bill', 'To buy a new card', 'To send a letter'],
                     answer: 1,
-                    hint: 'It is a place where you keep your money.'
+                    hint: "He says: 'I need to pay my electric bill.'"
                 },
                 {
-                    text: 'What does the customer want to do?',
-                    options: ['Pay a bill', 'Open a new account', 'Deposit some money', 'Change some coins'],
-                    answer: 2,
-                    hint: "He says: 'I'd like to deposit some money.'"
+                    text: 'What does the teller ask the customer to show?',
+                    options: ['A passport', 'The bill', 'A photo', 'A phone'],
+                    answer: 1,
+                    hint: "The teller asks: 'Do you have your bill with you?'"
                 },
                 {
-                    text: 'How much money does the customer deposit?',
-                    options: ['$100', '$120', '$200', '$20'],
-                    answer: 2,
-                    hint: "The teller says: 'I'll deposit … into your account.'"
-                },
-                {
-                    text: 'What does the customer ask for at the end?',
-                    options: ['A receipt', 'Some change', 'A new card', 'The account number'],
+                    text: 'How much is the bill?',
+                    options: ['45.60 dollars', '15 dollars', '100 dollars', '5.60 dollars'],
                     answer: 0,
-                    hint: 'It is the paper that shows he paid.'
+                    hint: 'The teller says the total out loud.'
                 },
                 {
-                    text: 'What does the teller ask for?',
-                    options: ["The customer's address", 'The account number', 'A passport', 'The bill'],
+                    text: 'How does the customer pay?',
+                    options: ['By cash', 'By check', 'By card', 'Online'],
+                    answer: 2,
+                    hint: "The customer says 'please' after choosing."
+                },
+                {
+                    text: 'What does the teller give at the end?',
+                    options: ['A new account', 'A receipt', 'A bill', 'A credit card'],
                     answer: 1,
-                    hint: "Listen to the teller's question at the start."
+                    hint: "The teller says: 'All done! Here is your…'"
                 }
             ]
         });

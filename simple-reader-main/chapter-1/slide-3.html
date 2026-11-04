@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Objectives</title>
+    <title>Objectives of the day</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="lesson.css">
+    <style>
+        /* slide-specific spacing: room below the reader navbar and around the subtitle */
+        @media (min-width: 641px) {
+            .bec-slide { padding-top: clamp(26px, 4.5vh, 52px); }
+            .bec-header { margin-bottom: clamp(16px, 3vh, 30px); }
+            .bec-subtitle { margin-top: clamp(8px, 1.6vh, 16px); margin-bottom: clamp(6px, 1.2vh, 12px); }
+        }
+    </style>
     <script src="lesson.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
@@ -16,35 +24,154 @@
     <div class="bec-glow"></div>
     <main class="bec-main">
         <header class="bec-header">
-            <h1 class="bec-title"><span class="bec-title-accent">Learning Objectives</span></h1>
+            <h1 class="bec-title"><span class="bec-title-accent">Objectives of the day</span></h1>
             <p class="bec-subtitle">In this lesson you will:</p>
         </header>
-        <div class="bec-obj-list" id="obj-list"></div>
+
+        <div class="bec-obj-grid" id="obj-grid">
+            <!-- Objective 1: utility bills (electricity + water) -->
+            <div class="bec-obj-card">
+                <svg class="bec-obj-art" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An electricity bill and a water bill with a light bulb and a water drop">
+                    <defs>
+                        <linearGradient id="obj1Blob" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#818cf8"/>
+                            <stop offset="1" stop-color="#38bdf8"/>
+                        </linearGradient>
+                        <linearGradient id="obj1Drop" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#7dd3fc"/>
+                            <stop offset="1" stop-color="#0ea5e9"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="400" height="200" fill="url(#obj1Blob)" opacity="0.12"/>
+                    <circle cx="352" cy="40" r="26" fill="#38bdf8" opacity="0.14"/>
+                    <circle cx="40" cy="168" r="20" fill="#818cf8" opacity="0.16"/>
+
+                    <!-- electricity bill -->
+                    <g transform="translate(38 26)">
+                        <rect x="8" y="6" width="120" height="142" rx="10" fill="#0f172a" opacity="0.10"/>
+                        <rect width="120" height="142" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+                        <rect x="14" y="14" width="52" height="10" rx="5" fill="#6366f1"/>
+                        <text x="72" y="23" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="9" letter-spacing="1">BILL</text>
+                        <rect x="14" y="36" width="70" height="6" rx="3" fill="#e2e8f0"/>
+                        <rect x="14" y="50" width="92" height="6" rx="3" fill="#e2e8f0"/>
+                        <rect x="14" y="64" width="56" height="6" rx="3" fill="#e2e8f0"/>
+                        <rect x="14" y="88" width="92" height="26" rx="7" fill="#eef2ff"/>
+                        <rect x="22" y="96" width="46" height="5" rx="2.5" fill="#c7d2fe"/>
+                        <rect x="22" y="105" width="30" height="5" rx="2.5" fill="#a5b4fc"/>
+                        <text x="102" y="106" fill="#4f46e5" font-family="Plus Jakarta Sans, sans-serif" font-weight="900" font-size="12" text-anchor="middle" transform="translate(4 0)">$42</text>
+                        <rect x="14" y="122" width="60" height="8" rx="4" fill="#f1f5f9"/>
+                    </g>
+
+                    <!-- light bulb (electricity) -->
+                    <g transform="translate(150 58)">
+                        <path d="M20 0C9 0 0 9 0 20c0 7 4 13 8 17 3 3 5 5 5 9h14c0-4 2-6 5-9 4-4 8-10 8-17C40 9 31 0 20 0z" fill="#fbbf24"/>
+                        <path d="M13 50h14M14 56h12" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M20 10v22M13 17l14 10M27 17L13 27" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+                        <path d="M-6 20h-10M56 20h10M0 -6l-7-7M40 -6l7-7" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+                    </g>
+
+                    <!-- water bill -->
+                    <g transform="translate(242 26)">
+                        <rect x="8" y="6" width="120" height="142" rx="10" fill="#0f172a" opacity="0.10"/>
+                        <rect width="120" height="142" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+                        <rect x="14" y="14" width="52" height="10" rx="5" fill="#0ea5e9"/>
+                        <text x="72" y="23" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="9" letter-spacing="1">BILL</text>
+                        <rect x="14" y="36" width="70" height="6" rx="3" fill="#e2e8f0"/>
+                        <rect x="14" y="50" width="92" height="6" rx="3" fill="#e2e8f0"/>
+                        <rect x="14" y="64" width="56" height="6" rx="3" fill="#e2e8f0"/>
+                        <rect x="14" y="88" width="92" height="26" rx="7" fill="#f0f9ff"/>
+                        <rect x="22" y="96" width="46" height="5" rx="2.5" fill="#bae6fd"/>
+                        <rect x="22" y="105" width="30" height="5" rx="2.5" fill="#7dd3fc"/>
+                        <text x="102" y="106" fill="#0284c7" font-family="Plus Jakarta Sans, sans-serif" font-weight="900" font-size="12" text-anchor="middle" transform="translate(4 0)">$18</text>
+                        <rect x="14" y="122" width="60" height="8" rx="4" fill="#f1f5f9"/>
+                    </g>
+
+                    <!-- water drop -->
+                    <g transform="translate(150 118)">
+                        <path d="M16 0C16 0 0 20 0 30a16 16 0 0 0 32 0C32 20 16 0 16 0z" fill="url(#obj1Drop)"/>
+                        <path d="M9 31a7 7 0 0 0 5 7" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+                </svg>
+                <div class="bec-obj-card-body">
+                    <span class="bec-obj-num">1</span>
+                    <span class="bec-obj-text">Understand utility bills and identify important information about electricity and water usage.</span>
+                </div>
+            </div>
+
+            <!-- Objective 2: banking vocabulary (ATM, deposit, withdrawal) -->
+            <div class="bec-obj-card">
+                <svg class="bec-obj-art" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bank card with coins showing deposit and withdrawal at an ATM">
+                    <defs>
+                        <linearGradient id="obj2Blob" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#6366f1"/>
+                            <stop offset="1" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                        <linearGradient id="obj2Card" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#6366f1"/>
+                            <stop offset="1" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                        <linearGradient id="obj2Coin" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#fbbf24"/>
+                            <stop offset="1" stop-color="#f59e0b"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="400" height="200" fill="url(#obj2Blob)" opacity="0.12"/>
+                    <circle cx="44" cy="42" r="24" fill="#8b5cf6" opacity="0.14"/>
+                    <circle cx="356" cy="164" r="20" fill="#6366f1" opacity="0.16"/>
+
+                    <!-- ATM machine -->
+                    <g transform="translate(36 28)">
+                        <rect x="10" y="4" width="96" height="140" rx="12" fill="#0f172a" opacity="0.10"/>
+                        <rect width="96" height="140" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+                        <rect x="12" y="12" width="72" height="40" rx="7" fill="#0f172a"/>
+                        <text x="48" y="38" fill="#7dd3fc" font-family="Plus Jakarta Sans, sans-serif" font-weight="900" font-size="15" letter-spacing="2" text-anchor="middle">ATM</text>
+                        <rect x="12" y="62" width="46" height="8" rx="4" fill="#e2e8f0"/>
+                        <rect x="12" y="78" width="72" height="6" rx="3" fill="#f1f5f9"/>
+                        <rect x="12" y="90" width="56" height="6" rx="3" fill="#f1f5f9"/>
+                        <rect x="12" y="110" width="72" height="18" rx="6" fill="#4f46e5"/>
+                        <rect x="30" y="116" width="36" height="6" rx="3" fill="#c7d2fe"/>
+                    </g>
+
+                    <!-- bank card -->
+                    <g transform="translate(212 46)">
+                        <rect x="8" y="8" width="150" height="92" rx="14" fill="#0f172a" opacity="0.10"/>
+                        <rect width="150" height="92" rx="14" fill="url(#obj2Card)"/>
+                        <rect x="16" y="16" width="30" height="22" rx="5" fill="#fbbf24"/>
+                        <path d="M21 16v22M28 16v22M35 16v22" stroke="#f59e0b" stroke-width="2"/>
+                        <text x="20" y="66" fill="#ffffff" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="11" letter-spacing="1.5">5327 44 ••••</text>
+                        <circle cx="126" cy="24" r="9" fill="#ffffff" opacity="0.25"/>
+                        <circle cx="112" cy="24" r="9" fill="#ffffff" opacity="0.4"/>
+                    </g>
+
+                    <!-- deposit: coin + arrow down into card -->
+                    <g transform="translate(168 96)">
+                        <path d="M14 8v34M14 46l-9-10M14 46l9-10" stroke="#16a34a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <ellipse cx="14" cy="66" rx="16" ry="6.5" fill="#f59e0b"/>
+                        <ellipse cx="14" cy="60" rx="16" ry="6.5" fill="url(#obj2Coin)"/>
+                        <ellipse cx="14" cy="60" rx="9" ry="3.5" fill="#fde68a"/>
+                    </g>
+
+                    <!-- withdrawal: arrow up out of card -->
+                    <g transform="translate(330 40)">
+                        <path d="M0 36V8M0 4l-9 10M0 4l9 10" stroke="#dc2626" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <ellipse cx="0" cy="52" rx="13" ry="5" fill="#f59e0b" opacity="0.6"/>
+                    </g>
+                </svg>
+                <div class="bec-obj-card-body">
+                    <span class="bec-obj-num">2</span>
+                    <span class="bec-obj-text">Recognize and use basic banking vocabulary, such as ATM, deposit, and withdrawal, to manage everyday finances.</span>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 
 <script>
-    var OBJECTIVES = [
-        'Talk about paying bills and banking services',
-        'Understand common vocabulary: bills, charges, receipts, and accounts',
-        'Listen to conversations about money and answer questions',
-        'Read a simple bill and find important information',
-        'Use polite phrases at the bank or the cashier'
-    ];
-
     document.addEventListener('DOMContentLoaded', function () {
-        var list = document.getElementById('obj-list');
-        OBJECTIVES.forEach(function (text, i) {
-            var card = BEC.el('div', 'bec-obj');
-            card.appendChild(BEC.el('span', 'bec-obj-num', String(i + 1)));
-            card.appendChild(BEC.el('span', 'bec-obj-text', text));
-            list.appendChild(card);
-        });
-
         window.resetSlide = function () {
-            BEC.entrance('.bec-header, .bec-obj');
+            BEC.entrance('.bec-header, .bec-obj-card');
         };
-        BEC.entrance('.bec-header, .bec-obj');
+        BEC.entrance('.bec-header, .bec-obj-card');
     });
 </script>
 </body>
