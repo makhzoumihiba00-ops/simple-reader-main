@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank you!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title" style="font-size:clamp(29px,5.2vh,45px);">Thank <span class="bec-title-accent">you!</span></h1>
+            <p class="bec-subtitle">You finished the lesson — great job!</p>
+        </header>
+
+        <div class="bec-review-card">
+            <p class="bec-review-label">Quick review</p>
+            <div class="bec-review-list" id="review-list"></div>
+        </div>
+
+        <p class="bec-footnote">See you in the next lesson!</p>
+    </main>
+</div>
+
+<script>
+    var REVIEW = [
+        { q: 'What do you say when you pay with a card?', a: 'Could I pay by card, please?' },
+        { q: "What is a 'receipt'?", a: 'It is the paper that shows you paid.' },
+        { q: 'Where do you pay your electricity bill?', a: 'At the bank, at the post office, or online.' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var list = document.getElementById('review-list');
+        REVIEW.forEach(function (item, i) {
+            var wrap = BEC.el('div', 'bec-review-item');
+            var qRow = BEC.el('div', 'bec-review-q');
+            qRow.appendChild(BEC.el('span', 'bec-review-num', String(i + 1)));
+            qRow.appendChild(BEC.el('span', null, item.q));
+            var show = BEC.el('button', 'bec-btn bec-btn-ghost', 'Show');
+            show.type = 'button';
+            show.addEventListener('click', function () {
+                var open = wrap.classList.toggle('is-open');
+                show.textContent = open ? 'Hide' : 'Show';
+            });
+            qRow.appendChild(show);
+            wrap.appendChild(qRow);
+            wrap.appendChild(BEC.el('span', 'bec-review-a', item.a));
+            list.appendChild(wrap);
+        });
+
+        window.resetSlide = function () {
+            document.querySelectorAll('.bec-review-item').forEach(function (el) {
+                el.classList.remove('is-open');
+            });
+            document.querySelectorAll('.bec-review-q .bec-btn').forEach(function (b) {
+                b.textContent = 'Show';
+            });
+        };
+
+        BEC.entrance('.bec-header, .bec-review-card, .bec-footnote');
+    });
+</script>
+</body>
+</html>

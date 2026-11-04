@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read the Cable-TV bill</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide" id="slide-root">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">Read the <span class="bec-title-accent">Cable-TV bill</span></h1>
+            <p class="bec-subtitle">Then answer the questions</p>
+            <button type="button" class="bec-btn bec-btn-ghost bec-bill-inline-btn" id="view-bill-btn">View Bill</button>
+        </header>
+
+        <div class="bec-read">
+            <div class="bec-bill" id="bill-panel"></div>
+            <div class="bec-quiz-panel" id="quiz-mount"></div>
+        </div>
+    </main>
+</div>
+
+<template id="bill-template">
+    <div class="bec-bill-head">
+        <span class="bec-bill-brand">CITY CABLE TV</span>
+        <span class="bec-bill-tag">Statement</span>
+    </div>
+    <div class="bec-bill-body">
+        <div class="bec-bill-row"><span>Account Holder</span><span>Maria Gomez</span></div>
+        <div class="bec-bill-row"><span>Account Number</span><span>4471-882</span></div>
+        <div class="bec-bill-row"><span>Billing Period</span><span>March 1 – March 31, 2024</span></div>
+        <div class="bec-bill-row"><span>Service Address</span><span>12 River Road, Apt 4</span></div>
+        <div class="bec-bill-sep"></div>
+        <div class="bec-bill-row"><span>Basic Cable Package</span><span>$45.00</span></div>
+        <div class="bec-bill-row"><span>Premium Channels</span><span>$18.50</span></div>
+        <div class="bec-bill-row"><span>Equipment Rental</span><span>$5.00</span></div>
+        <div class="bec-bill-row"><span>Taxes</span><span>$4.25</span></div>
+        <div class="bec-bill-total">
+            <div class="bec-bill-row"><span>TOTAL DUE</span><span>$72.75</span></div>
+        </div>
+        <div class="bec-bill-row"><span>Due Date</span><span>April 15, 2024</span></div>
+        <p class="bec-bill-note">Please pay by the due date to avoid late fees.</p>
+    </div>
+</template>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var slideRoot = document.getElementById('slide-root');
+        var template = document.getElementById('bill-template');
+
+        /* bill in the left panel */
+        document.getElementById('bill-panel').appendChild(template.content.cloneNode(true));
+
+        /* same bill inside a full-screen overlay for small screens */
+        var overlay = BEC.el('div', 'bec-overlay');
+        var overlayCard = BEC.el('div', 'bec-overlay-card');
+        overlayCard.style.width = 'min(420px, 100%)';
+        var overlayTitle = BEC.el('h3', 'bec-overlay-title', 'Cable-TV Bill');
+        var overlayClose = BEC.el('button', 'bec-overlay-close', '×');
+        overlayClose.type = 'button';
+        overlayClose.setAttribute('aria-label', 'Close');
+        var billClone = document.createElement('div');
+        billClone.className = 'bec-bill';
+        billClone.appendChild(template.content.cloneNode(true));
+        overlayCard.appendChild(overlayTitle);
+        overlayCard.appendChild(overlayClose);
+        overlayCard.appendChild(billClone);
+        overlay.appendChild(overlayCard);
+        slideRoot.appendChild(overlay);
+
+        function closeOverlay() { overlay.classList.remove('is-open'); }
+        overlayClose.addEventListener('click', closeOverlay);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) closeOverlay(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeOverlay(); });
+        document.getElementById('view-bill-btn').addEventListener('click', function () {
+            overlay.classList.add('is-open');
+        });
+
+        var quiz = new BEC.Quiz(document.getElementById('quiz-mount'), {
+            questions: [
+                {
+                    text: 'How much is the total due?',
+                    options: ['$72.75', '$45.00', '$18.50'],
+                    answer: 0,
+                    hint: 'Look at the bold total under the charges.'
+                },
+                {
+                    text: 'When does Maria have to pay the bill?',
+                    options: ['March 31, 2024', 'April 15, 2024', 'April 30, 2024'],
+                    answer: 1,
+                    hint: "Find 'Due Date' on the bill."
+                },
+                {
+                    text: 'How much are the Premium Channels?',
+                    options: ['$5.00', '$4.25', '$18.50'],
+                    answer: 2,
+                    hint: "Find 'Premium Channels' in the charges list."
+                }
+            ]
+        });
+
+        window.resetSlide = function () {
+            closeOverlay();
+            quiz.restart();
+        };
+        BEC.entrance('.bec-header, .bec-read');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary – Paying Bills and Banking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header" style="margin-bottom:4px;">
+            <h1 class="bec-title" style="font-size:clamp(21px,3.55vh,31px);">Vocabulary – <span class="bec-title-accent">Paying Bills and Banking</span></h1>
+            <p class="bec-subtitle" style="margin-top:2px;">Click on cards to listen and practice pronunciation</p>
+        </header>
+
+        <div class="bec-vocab-area">
+            <div class="bec-vocab-grid" id="vocab-grid"></div>
+            <div class="bec-vocab-pager" id="vocab-pager"></div>
+        </div>
+    </main>
+</div>
+
+<script>
+    /* ==================================================================
+       MEDIA INTEGRATION — TECH LEAD ONLY
+       Card images: the reference deck shows photos per word. None are
+       bundled with the project, so every card uses ONE consistent
+       placeholder pattern (no misleading imagery). If real images are
+       provided later, map a word to its image URL in WORD_IMAGE and the
+       card renders it — e.g. WORD_IMAGE['receipt'] = 'receipt.jpg';
+       Word audio: same idea with WORD_AUDIO[word] = 'https://…/receipt.mp3';
+       Speaker buttons stay disabled until a URL is mapped. No TTS.
+       ================================================================== */
+    var WORD_IMAGE = {};
+    var WORD_AUDIO = {};
+
+    var WORDS = [
+        { word: 'bill', meaning: 'a paper that shows how much money you must pay', example: 'You must pay the electricity bill today.' },
+        { word: 'receipt', meaning: 'paper that shows you paid', example: 'The waiter brought the receipt after we paid.' },
+        { word: 'charge', meaning: 'the price of a service', example: 'What is this charge for?' },
+        { word: 'amount', meaning: 'the total money to pay', example: 'Is the amount correct?' },
+        { word: 'change', meaning: 'money returned to you', example: 'I paid with $100 and got $12 change.' },
+        { word: 'check out', meaning: 'to pay and leave a hotel', example: 'We checked out of the hotel at noon.' },
+        { word: 'deposit', meaning: 'to put money into an account', example: 'I went to the bank to deposit my money.' },
+        { word: 'withdraw', meaning: 'to take money out of an account', example: 'You can withdraw money at any ATM.' },
+        { word: 'balance', meaning: 'the money in your account', example: 'Could you tell me my balance?' },
+        { word: 'account', meaning: 'your place for money at a bank', example: "I'd like to open an account." },
+        { word: 'transfer', meaning: 'to move money to another account', example: "Can you transfer money to my friend's account?" },
+        { word: 'loan', meaning: 'money you borrow from a bank', example: 'I need a loan to buy a car.' }
+    ];
+
+    var PER_PAGE = 6;
+    var PAGES = [];
+    for (var p = 0; p < Math.ceil(WORDS.length / PER_PAGE); p++) {
+        PAGES.push(WORDS.slice(p * PER_PAGE, (p + 1) * PER_PAGE));
+    }
+    var pageIdx = 0;
+
+    function renderPage() {
+        var grid = document.getElementById('vocab-grid');
+        grid.innerHTML = '';
+        PAGES[pageIdx].forEach(function (item) {
+            var card = BEC.el('div', 'bec-wordcard');
+
+            var imgWrap = BEC.el('div', 'bec-wordcard-img');
+            var imgUrl = WORD_IMAGE[item.word];
+            if (imgUrl) {
+                var img = document.createElement('img');
+                img.src = imgUrl;
+                img.alt = item.word;
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+                imgWrap.appendChild(img);
+            } else {
+                imgWrap.appendChild(BEC.icon('image')); /* one consistent placeholder pattern */
+            }
+            card.appendChild(imgWrap);
+
+            var body = BEC.el('div', 'bec-wordcard-body');
+            var top = BEC.el('div', 'bec-wordcard-top');
+            top.appendChild(BEC.el('span', 'bec-wordcard-word', item.word));
+            var speak = BEC.el('button', 'bec-speak');
+            speak.type = 'button';
+            speak.setAttribute('aria-label', 'Listen: ' + item.word);
+            speak.appendChild(BEC.icon('speaker'));
+            var audioUrl = WORD_AUDIO[item.word];
+            if (audioUrl) {
+                var audio = new Audio(audioUrl);
+                audio.preload = 'none';
+                speak.addEventListener('click', function () {
+                    audio.currentTime = 0;
+                    audio.play().catch(function () {});
+                });
+                window.__vocabPlayers.push(audio);
+            } else {
+                speak.disabled = true;
+                speak.title = 'Audio will be connected when the hosted file is available';
+            }
+            top.appendChild(speak);
+            body.appendChild(top);
+            body.appendChild(BEC.el('span', 'bec-wordcard-meaning', item.meaning));
+            body.appendChild(BEC.el('span', 'bec-wordcard-example', '"' + item.example + '"'));
+            card.appendChild(body);
+            grid.appendChild(card);
+        });
+
+        var pager = document.getElementById('vocab-pager');
+        pager.innerHTML = '';
+        if (PAGES.length > 1) {
+            var prev = BEC.el('button', 'bec-btn bec-btn-ghost', '‹');
+            prev.type = 'button';
+            prev.setAttribute('aria-label', 'Previous words');
+            prev.disabled = pageIdx === 0;
+            prev.addEventListener('click', function () { pageIdx--; renderPage(); });
+            pager.appendChild(prev);
+        }
+        pager.appendChild(BEC.el('span', null, (pageIdx + 1) + ' / ' + PAGES.length));
+        if (PAGES.length > 1) {
+            var next = BEC.el('button', 'bec-btn bec-btn-ghost', '›');
+            next.type = 'button';
+            next.setAttribute('aria-label', 'More words');
+            next.disabled = pageIdx === PAGES.length - 1;
+            next.addEventListener('click', function () { pageIdx++; renderPage(); });
+            pager.appendChild(next);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        window.__vocabPlayers = [];
+        renderPage();
+
+        window.stopSlideAudio = function () {
+            (window.__vocabPlayers || []).forEach(function (a) { a.pause(); a.currentTime = 0; });
+        };
+        window.resetSlide = function () {
+            window.stopSlideAudio();
+            pageIdx = 0;
+            renderPage();
+        };
+
+        BEC.entrance('.bec-header, .bec-vocab-area');
+    });
+</script>
+</body>
+</html>

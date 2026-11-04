@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's warm up!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">Let's <span class="bec-title-accent">warm up!</span></h1>
+            <p class="bec-subtitle">Talk with your teacher</p>
+        </header>
+        <div class="bec-disc-list" id="disc-list"></div>
+        <p class="bec-footnote">Share your answers with the class.</p>
+    </main>
+</div>
+
+<script>
+    var QUESTIONS = [
+        'When you pay for something, do you use cash or a card? Why?',
+        'Do you check the bill before you pay?',
+        'Do you usually ask for a receipt?'
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var list = document.getElementById('disc-list');
+        QUESTIONS.forEach(function (text, i) {
+            var card = BEC.el('div', 'bec-disc');
+            card.appendChild(BEC.el('span', 'bec-disc-num', String(i + 1).padStart(2, '0')));
+            card.appendChild(BEC.el('span', 'bec-disc-text', text));
+            list.appendChild(card);
+        });
+
+        window.resetSlide = function () {
+            BEC.entrance('.bec-header, .bec-disc, .bec-footnote');
+        };
+        BEC.entrance('.bec-header, .bec-disc, .bec-footnote');
+    });
+</script>
+</body>
+</html>

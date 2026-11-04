@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New language: saying it politely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">New language: <span class="bec-title-accent">saying it politely</span></h1>
+            <p class="bec-subtitle">Listen and repeat each phrase</p>
+        </header>
+        <div class="bec-phrase-list" id="phrase-list"></div>
+        <p class="bec-footnote">Practise saying each phrase twice.</p>
+    </main>
+</div>
+
+<script>
+    /* ==================================================================
+       MEDIA INTEGRATION — TECH LEAD ONLY
+       Each phrase has its own speaker button in the platform style. No
+       audio is synthesised in the browser (no TTS). When the hosted
+       recordings are ready, map a phrase to its URL in PHRASE_AUDIO
+       below and that button activates automatically — e.g.
+       PHRASE_AUDIO[0] = 'https://<media-host>/a1/u4l3/polite-01.mp3';
+       Buttons without a URL stay visibly disabled.
+       ================================================================== */
+    var PHRASE_AUDIO = {};
+
+    var PHRASES = [
+        'Could I pay by card, please?',
+        'Would you mind giving me a receipt?',
+        'Could you help me with my bill?',
+        'I would like to open an account, please.',
+        'Excuse me, where is the counter?'
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var list = document.getElementById('phrase-list');
+        var players = [];
+
+        PHRASES.forEach(function (phrase, i) {
+            var row = BEC.el('div', 'bec-phrase');
+            var speak = BEC.el('button', 'bec-speak');
+            speak.type = 'button';
+            speak.setAttribute('aria-label', 'Listen: ' + phrase);
+            speak.appendChild(BEC.icon('speaker'));
+            row.appendChild(speak);
+            row.appendChild(BEC.el('span', 'bec-phrase-text', phrase));
+            row.appendChild(BEC.el('span', 'bec-phrase-en', 'Phrase ' + (i + 1)));
+            list.appendChild(row);
+
+            var src = PHRASE_AUDIO[i] || '';
+            if (src) {
+                var audio = new Audio(src);
+                audio.preload = 'none';
+                speak.addEventListener('click', function () {
+                    if (!audio.paused) { audio.pause(); audio.currentTime = 0; return; }
+                    players.forEach(function (a) { a.pause(); a.currentTime = 0; });
+                    audio.play().catch(function () {});
+                });
+                players.push(audio);
+            } else {
+                speak.disabled = true;
+                speak.title = 'Audio will be connected when the hosted file is available';
+            }
+        });
+
+        window.stopSlideAudio = function () {
+            players.forEach(function (a) { a.pause(); a.currentTime = 0; });
+        };
+        window.resetSlide = function () {
+            window.stopSlideAudio();
+        };
+
+        BEC.entrance('.bec-header, .bec-phrase, .bec-footnote');
+    });
+</script>
+</body>
+</html>

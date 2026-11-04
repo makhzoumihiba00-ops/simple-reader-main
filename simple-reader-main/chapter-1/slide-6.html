@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video comprehension</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">Video <span class="bec-title-accent">comprehension</span></h1>
+            <p class="bec-subtitle">Answer the questions about the video</p>
+        </header>
+        <div id="quiz-mount" style="display:flex; flex-direction:column; flex:1 1 auto; min-height:0; width:100%; align-items:center;"></div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var quiz = new BEC.Quiz(document.getElementById('quiz-mount'), {
+            questions: [
+                {
+                    text: 'Where does the video take place?',
+                    options: ['In a supermarket', 'At the bank', 'At home', 'In a shop'],
+                    answer: 1,
+                    hint: 'It is a place where you keep your money.'
+                },
+                {
+                    text: 'What does the customer want to do?',
+                    options: ['Pay a bill', 'Open a new account', 'Deposit some money', 'Change some coins'],
+                    answer: 2,
+                    hint: "He says: 'I'd like to deposit some money.'"
+                },
+                {
+                    text: 'How much money does the customer deposit?',
+                    options: ['$100', '$120', '$200', '$20'],
+                    answer: 2,
+                    hint: "The teller says: 'I'll deposit … into your account.'"
+                },
+                {
+                    text: 'What does the customer ask for at the end?',
+                    options: ['A receipt', 'Some change', 'A new card', 'The account number'],
+                    answer: 0,
+                    hint: 'It is the paper that shows he paid.'
+                },
+                {
+                    text: 'What does the teller ask for?',
+                    options: ["The customer's address", 'The account number', 'A passport', 'The bill'],
+                    answer: 1,
+                    hint: "Listen to the teller's question at the start."
+                }
+            ]
+        });
+
+        window.resetSlide = function () { quiz.restart(); };
+        BEC.entrance('.bec-header');
+    });
+</script>
+</body>
+</html>

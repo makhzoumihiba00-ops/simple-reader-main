@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Objectives</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title"><span class="bec-title-accent">Learning Objectives</span></h1>
+            <p class="bec-subtitle">In this lesson you will:</p>
+        </header>
+        <div class="bec-obj-list" id="obj-list"></div>
+    </main>
+</div>
+
+<script>
+    var OBJECTIVES = [
+        'Talk about paying bills and banking services',
+        'Understand common vocabulary: bills, charges, receipts, and accounts',
+        'Listen to conversations about money and answer questions',
+        'Read a simple bill and find important information',
+        'Use polite phrases at the bank or the cashier'
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var list = document.getElementById('obj-list');
+        OBJECTIVES.forEach(function (text, i) {
+            var card = BEC.el('div', 'bec-obj');
+            card.appendChild(BEC.el('span', 'bec-obj-num', String(i + 1)));
+            card.appendChild(BEC.el('span', 'bec-obj-text', text));
+            list.appendChild(card);
+        });
+
+        window.resetSlide = function () {
+            BEC.entrance('.bec-header, .bec-obj');
+        };
+        BEC.entrance('.bec-header, .bec-obj');
+    });
+</script>
+</body>
+</html>

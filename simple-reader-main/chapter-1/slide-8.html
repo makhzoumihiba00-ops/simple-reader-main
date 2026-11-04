@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>At the bank</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide" id="slide-root">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">At <span class="bec-title-accent">the bank</span></h1>
+            <p class="bec-subtitle">Listen and read the conversation</p>
+        </header>
+
+        <div class="bec-video-wrap" id="video-mount" style="flex:0 0 auto;"></div>
+
+        <div class="bec-dialogue-card" id="dialogue"></div>
+        <p class="bec-footnote">Notice the polite phrases in bold.</p>
+    </main>
+</div>
+
+<script>
+    /* ==================================================================
+       MEDIA INTEGRATION — TECH LEAD ONLY
+       The dialogue recording/video is hosted by the tech lead. Paste the
+       URL below when it is ready and the player activates automatically.
+       While it is empty the area stays a clean, empty 16:9 black frame
+       with disabled controls — the dialogue below remains fully usable.
+       Example: var MEDIA_SRC = 'https://<media-host>/a1/u4l3/at-the-bank.mp4';
+       ================================================================== */
+    var MEDIA_SRC = '';
+
+    var DIALOGUE = [
+        { who: 'Teller', html: 'Good morning. How can I help you?' },
+        { who: 'Customer', html: "Hello. <strong>I'd like to</strong> deposit some money, <strong>please</strong>." },
+        { who: 'Teller', html: '<strong>Of course.</strong> Do you have your account number?' },
+        { who: 'Customer', html: 'Yes, here it is.' },
+        { who: 'Teller', html: "Thank you. I'll deposit $200 into your account." },
+        { who: 'Customer', html: 'Can I also get the receipt?' },
+        { who: 'Teller', html: '<strong>Of course. Here you are.</strong>' },
+        { who: 'Customer', html: '<strong>Thank you very much.</strong>' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var player = new BEC.VideoPlayer(document.getElementById('video-mount'), { src: MEDIA_SRC, small: true });
+
+        var dialogue = document.getElementById('dialogue');
+        DIALOGUE.forEach(function (line, i) {
+            var row = BEC.el('div', 'bec-dline');
+            row.appendChild(BEC.el('span', 'bec-dspeaker ' + (i % 2 === 0 ? 'bec-sp-a' : 'bec-sp-b'), line.who));
+            var text = BEC.el('span', 'bec-dtext');
+            text.innerHTML = line.html;
+            row.appendChild(text);
+            dialogue.appendChild(row);
+        });
+
+        window.resetSlide = function () {
+            player.stop();
+        };
+        window.stopSlideAudio = function () {
+            player.stop();
+        };
+
+        BEC.entrance('.bec-header, .bec-video, .bec-dialogue-card, .bec-footnote');
+    });
+</script>
+</body>
+</html>

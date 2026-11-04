@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">Vocabulary <span class="bec-title-accent">Practice</span></h1>
+            <p class="bec-subtitle">Choose the correct answer</p>
+        </header>
+        <div id="quiz-mount" style="display:flex; flex-direction:column; flex:1 1 auto; min-height:0; width:100%; align-items:center;"></div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var quiz = new BEC.Quiz(document.getElementById('quiz-mount'), {
+            questions: [
+                {
+                    text: "What is the meaning of 'receipt'?",
+                    options: ['The paper you get after you pay', 'Extra money for a service', 'The total to pay', 'Money the shop gives back'],
+                    answer: 0,
+                    hint: 'You get it after you pay.'
+                },
+                {
+                    text: "What is the meaning of 'change'?",
+                    options: ['Money the shop gives back', 'Paper that shows you paid', 'The price of a service', 'Money in your account'],
+                    answer: 0,
+                    hint: 'The shop gives it back when you pay too much.'
+                },
+                {
+                    text: 'What do we call the money in your bank account?',
+                    options: ['Loan', 'Balance', 'Charge', 'Receipt'],
+                    answer: 1,
+                    hint: "You can ask the teller: 'Could you tell me my…?'"
+                },
+                {
+                    text: "What does 'deposit' mean?",
+                    options: ['To put money into an account', 'To take money out', 'To ask for a receipt', 'To pay a bill'],
+                    answer: 0,
+                    hint: "It is the opposite of 'withdraw'."
+                },
+                {
+                    text: "What is a 'charge'?",
+                    options: ['The price of a service', 'Paper that shows you paid', 'Money returned to you', 'Money you borrow'],
+                    answer: 0,
+                    hint: 'It is the extra money you pay for a service.'
+                }
+            ]
+        });
+
+        window.resetSlide = function () { quiz.restart(); };
+        BEC.entrance('.bec-header');
+    });
+</script>
+</body>
+</html>

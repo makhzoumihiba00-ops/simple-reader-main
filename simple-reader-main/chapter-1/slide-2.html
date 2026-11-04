@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First let's do a quick revision!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide" id="slide-root">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">First let's do a <span class="bec-title-accent">quick revision!</span></h1>
+            <p class="bec-subtitle">Listen and choose True or False</p>
+        </header>
+        <div id="quiz-mount" style="display:flex; flex-direction:column; flex:1 1 auto; min-height:0; width:100%; align-items:center;"></div>
+    </main>
+</div>
+
+<script>
+    /* ==================================================================
+       MEDIA INTEGRATION — TECH LEAD ONLY
+       No audio is generated or faked on this slide. When the hosted
+       recording of the revision dialogue is ready, paste its URL below
+       and the player activates automatically (real duration, controls).
+       Example: AUDIO_SRC = 'https://<media-host>/a1/u4l3/revision.mp3';
+       While AUDIO_SRC is empty the player stays visibly disabled and the
+       quiz, Script, hints, scoring and navigation keep working.
+       ================================================================== */
+    var AUDIO_SRC = '';
+
+    var TRANSCRIPT_PAGES = [
+        [
+            { speaker: 'A', text: 'Does the kitchen have everything you need, like a stove and a refrigerator?' },
+            { speaker: 'B', text: "There's a stove, but not a refrigerator. I need to buy one.", b: true },
+            { speaker: 'A', text: "You don't have a bed in your bedroom?" },
+            { speaker: 'B', text: 'Well, I have a TV. But for now, I only have a mattress on the floor.', b: true },
+            { speaker: 'A', text: 'Really?' },
+            { speaker: 'A', text: "We don't have much furniture yet. We don't even have a sofa in the living room." }
+        ],
+        [
+            { speaker: 'B', text: "Hey. I've one I can sell you.", b: true },
+            { speaker: 'A', text: 'Really? Great.' },
+            { speaker: 'A', text: 'The bathroom is very small. There\'s just a shower and a toilet.' },
+            { speaker: 'B', text: 'You can come and take a bath at my place any time.', b: true },
+            { speaker: 'A', text: 'Thanks, I probably will.' }
+        ]
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var slideRoot = document.getElementById('slide-root');
+        var mount = document.getElementById('quiz-mount');
+
+        var quiz = new BEC.Quiz(mount, {
+            audio: { src: AUDIO_SRC },
+            questions: [
+                {
+                    text: "She doesn't plan to buy anything else for the apartment.",
+                    options: ['True', 'False'],
+                    answer: 1,
+                    layout: 'tf',
+                    hint: "They still need a refrigerator — and there is no sofa yet."
+                },
+                {
+                    text: 'He has a new bed.',
+                    options: ['True', 'False'],
+                    answer: 1,
+                    layout: 'tf',
+                    hint: 'For now, he only has a mattress on the floor.'
+                },
+                {
+                    text: 'She wants to buy some more furniture.',
+                    options: ['True', 'False'],
+                    answer: 0,
+                    layout: 'tf',
+                    hint: "Listen for: 'We don't have much furniture yet.'"
+                },
+                {
+                    text: "She'll probably take a bath at her friend's place.",
+                    options: ['True', 'False'],
+                    answer: 0,
+                    layout: 'tf',
+                    hint: "Listen to her answer to the invitation."
+                }
+            ]
+        });
+
+        /* Script button lives at the end of the audio row, like the reference */
+        var overlay = BEC.ScriptOverlay(slideRoot, 'Audio Script', TRANSCRIPT_PAGES);
+        if (quiz.audioBar) {
+            var scriptBtn = BEC.el('button', 'bec-btn bec-btn-ghost', 'Script');
+            scriptBtn.type = 'button';
+            scriptBtn.addEventListener('click', overlay.open);
+            quiz.audioBar.root.appendChild(scriptBtn);
+        }
+
+        window.resetSlide = function () {
+            overlay.close();
+            quiz.restart();
+        };
+        window.stopSlideAudio = function () {
+            quiz.stopAudio();
+        };
+
+        BEC.entrance('.bec-header');
+    });
+</script>
+</body>
+</html>

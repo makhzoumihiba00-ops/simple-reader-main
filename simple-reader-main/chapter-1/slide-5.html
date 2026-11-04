@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's watch this video!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide" id="slide-root">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header">
+            <h1 class="bec-title">Let's watch <span class="bec-title-accent">this video!</span></h1>
+            <p class="bec-subtitle">Paying bills at the bank — watch and listen</p>
+        </header>
+
+        <div class="bec-video-wrap" id="video-mount"></div>
+
+        <div class="bec-video-actions">
+            <button type="button" class="bec-btn bec-btn-ghost" id="script-btn">Read Script</button>
+        </div>
+        <p class="bec-footnote">Watch the video as many times as you need.</p>
+    </main>
+</div>
+
+<script>
+    /* ==================================================================
+       MEDIA INTEGRATION — TECH LEAD ONLY
+       The video is NOT bundled, generated or embedded from any third
+       party. When the hosted file is ready, paste its URL below and the
+       player activates automatically (play/pause, seek, real duration,
+       fullscreen). While VIDEO_SRC is empty the area stays a clean,
+       empty 16:9 black frame with visibly disabled controls.
+       Example: var VIDEO_SRC = 'https://<media-host>/a1/u4l3/bank-video.mp4';
+       ================================================================== */
+    var VIDEO_SRC = '';
+
+    /* Transcript shown by the "Read Script" button (lesson dialogue). */
+    var SCRIPT_PAGES = [
+        [
+            { speaker: 'Teller', text: 'Good morning. How can I help you?' },
+            { speaker: 'Customer', text: "Hello. I'd like to deposit some money, please.", b: true },
+            { speaker: 'Teller', text: 'Of course. Do you have your account number?' },
+            { speaker: 'Customer', text: 'Yes, here it is.' }
+        ],
+        [
+            { speaker: 'Teller', text: "Thank you. I'll deposit $200 into your account." },
+            { speaker: 'Customer', text: 'Can I also get the receipt?' },
+            { speaker: 'Teller', text: 'Of course. Here you are.', b: true },
+            { speaker: 'Customer', text: 'Thank you very much.', b: true }
+        ]
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var slideRoot = document.getElementById('slide-root');
+        var player = new BEC.VideoPlayer(document.getElementById('video-mount'), { src: VIDEO_SRC });
+
+        var overlay = BEC.ScriptOverlay(slideRoot, 'Video Script', SCRIPT_PAGES);
+        document.getElementById('script-btn').addEventListener('click', overlay.open);
+
+        window.resetSlide = function () {
+            overlay.close();
+            player.stop();
+        };
+        window.stopSlideAudio = function () {
+            player.stop();
+        };
+
+        BEC.entrance('.bec-header, .bec-video, .bec-video-actions, .bec-footnote');
+    });
+</script>
+</body>
+</html>

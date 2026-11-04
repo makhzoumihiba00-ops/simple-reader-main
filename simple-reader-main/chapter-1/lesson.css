@@ -1,0 +1,1132 @@
+/* ==========================================================================
+   Boston English Center — Chapter 1 shared lesson stylesheet ("Paying Bills")
+   Visual language derived from the reference deck (all_slides_from_video.pdf):
+   light #f8fafc stage, white rounded exercise cards, indigo #4f46e5 accents,
+   Plus Jakarta Sans everywhere, green/red answer feedback.
+   All classes are scoped with the `bec-` prefix so nothing leaks to the reader.
+   Every slide must fit its iframe viewport: the stage is a strict flex column
+   with no scrolling.
+   ========================================================================== */
+
+/* ---------- design tokens (mirror reader.html variables) ---------- */
+.bec-slide {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-glow: #818cf8;
+    --accent-soft: #eef2ff;
+    --accent-border: #c7d2fe;
+    --ok: #16a34a;
+    --ok-strong: #15803d;
+    --ok-soft: #ecfdf5;
+    --ok-border: #86efac;
+    --bad: #dc2626;
+    --bad-strong: #b91c1c;
+    --bad-soft: #fef2f2;
+    --bad-border: #fca5a5;
+    --track: #e2e8f0;
+    --shadow: 0 6px 22px -6px rgba(15, 23, 42, 0.10);
+    --shadow-soft: 0 2px 10px -2px rgba(15, 23, 42, 0.07);
+}
+
+html.dark .bec-slide {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #334155;
+    --accent: #6366f1;
+    --accent-hover: #818cf8;
+    --accent-glow: #818cf8;
+    --accent-soft: rgba(99, 102, 241, 0.16);
+    --accent-border: rgba(99, 102, 241, 0.45);
+    --ok: #4ade80;
+    --ok-strong: #86efac;
+    --ok-soft: rgba(34, 197, 94, 0.14);
+    --ok-border: rgba(74, 222, 128, 0.4);
+    --bad: #f87171;
+    --bad-strong: #fca5a5;
+    --bad-soft: rgba(239, 68, 68, 0.13);
+    --bad-border: rgba(248, 113, 113, 0.4);
+    --track: #334155;
+    --shadow: 0 6px 22px -6px rgba(0, 0, 0, 0.45);
+    --shadow-soft: 0 2px 10px -2px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- stage (no scrolling, ever) ---------- */
+html.bec-html, html.bec-html body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.bec-slide, .bec-slide *, .bec-slide *::before, .bec-slide *::after {
+    box-sizing: border-box;
+}
+
+.bec-slide {
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    padding: clamp(10px, 2.2vh, 26px) clamp(14px, 3vw, 40px) clamp(10px, 2vh, 22px);
+    overflow: hidden;
+}
+
+/* subtle brand glow, same family as the reader shell */
+.bec-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.bec-glow::before {
+    content: '';
+    position: absolute;
+    top: -140px; left: -120px;
+    width: 380px; height: 380px;
+    border-radius: 9999px;
+    background: rgba(99, 102, 241, 0.14);
+    filter: blur(70px);
+}
+.bec-glow::after {
+    content: '';
+    position: absolute;
+    bottom: -160px; right: -120px;
+    width: 420px; height: 420px;
+    border-radius: 9999px;
+    background: rgba(59, 130, 246, 0.10);
+    filter: blur(80px);
+}
+html.dark .bec-slide .bec-glow::before { background: rgba(99, 102, 241, 0.22); }
+html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
+
+.bec-main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 980px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* ---------- slide header ---------- */
+.bec-header {
+    text-align: center;
+    flex: 0 0 auto;
+    margin-bottom: clamp(6px, 1.4vh, 16px);
+}
+.bec-title {
+    margin: 0;
+    font-size: clamp(24px, 4.2vh, 36px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--text);
+}
+.bec-title .bec-title-accent {
+    background: linear-gradient(100deg, var(--accent), var(--accent-glow));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.bec-subtitle {
+    margin: clamp(2px, 0.7vh, 8px) 0 0;
+    font-size: clamp(14.5px, 2.3vh, 19px);
+    font-weight: 500;
+    color: var(--muted);
+}
+
+/* ---------- score pill bar ---------- */
+.bec-pill {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    box-shadow: var(--shadow-soft);
+    padding: 6px 6px;
+    margin-bottom: clamp(6px, 1.4vh, 14px);
+    max-width: 100%;
+}
+.bec-seg {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    font-size: clamp(13px, 1.9vh, 16px);
+    white-space: nowrap;
+}
+.bec-seg + .bec-seg { border-left: 1px solid var(--border); }
+.bec-seg-label { color: var(--muted); font-weight: 600; }
+.bec-seg-value { color: var(--text); font-weight: 800; font-variant-numeric: tabular-nums; }
+.bec-seg-value.bec-ok { color: var(--ok); }
+.bec-seg-value.bec-bad { color: var(--bad); }
+
+/* ---------- exercise card ---------- */
+.bec-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(720px, 100%);
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: clamp(12px, 2.4vh, 26px) clamp(14px, 2.6vw, 30px);
+    overflow: hidden;
+}
+.bec-card-top {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: clamp(14px, 2.6vh, 24px);
+}
+.bec-card-top-label {
+    font-size: clamp(14.5px, 2.2vh, 18px);
+    font-weight: 700;
+    color: var(--text);
+    margin-right: auto;
+}
+.bec-q-ind {
+    font-size: clamp(13.5px, 1.95vh, 16px);
+    font-weight: 700;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* ---------- buttons ---------- */
+.bec-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 11px;
+    border: 1px solid transparent;
+    font-family: inherit;
+    font-size: clamp(13.5px, 1.95vh, 16.5px);
+    font-weight: 700;
+    padding: clamp(6px, 1.1vh, 10px) clamp(10px, 1.6vw, 16px);
+    cursor: pointer;
+    transition: background .18s ease, border-color .18s ease, color .18s ease, transform .12s ease, opacity .18s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.bec-btn:active { transform: scale(0.97); }
+.bec-btn:disabled { cursor: not-allowed; }
+
+.bec-btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 8px 18px -8px rgba(79, 70, 229, 0.55);
+}
+.bec-btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+
+.bec-btn-ghost {
+    background: var(--card);
+    color: var(--muted);
+    border-color: var(--border);
+    box-shadow: var(--shadow-soft);
+}
+.bec-btn-ghost:hover:not(:disabled) {
+    color: var(--accent);
+    border-color: var(--accent-border);
+}
+.bec-btn-ghost:disabled, .bec-btn-primary:disabled { opacity: 0.45; box-shadow: none; }
+
+/* ---------- audio player row (prepared; disabled until a source exists) ---------- */
+.bec-audio {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.4vw, 14px);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-bottom: clamp(14px, 2.6vh, 24px);
+}
+.bec-audio-play {
+    flex: 0 0 auto;
+    width: clamp(30px, 4.6vh, 38px);
+    height: clamp(30px, 4.6vh, 38px);
+    border-radius: 9999px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .18s ease, opacity .18s ease, transform .12s ease;
+    padding: 0;
+}
+.bec-audio-play:hover:not(:disabled) { background: var(--accent-hover); }
+.bec-audio-play:active:not(:disabled) { transform: scale(0.94); }
+.bec-audio-play:disabled {
+    background: color-mix(in srgb, var(--muted) 22%, var(--card));
+    color: var(--muted);
+    cursor: not-allowed;
+    opacity: 0.75;
+}
+.bec-audio-play svg { width: 46%; height: 46%; }
+.bec-audio-track {
+    flex: 1 1 auto;
+    height: 6px;
+    min-width: 40px;
+    border-radius: 9999px;
+    background: var(--track);
+    overflow: hidden;
+}
+.bec-audio-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+    transition: width .2s linear;
+}
+.bec-audio-time {
+    flex: 0 0 auto;
+    font-size: clamp(13px, 1.85vh, 15px);
+    font-weight: 700;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.bec-audio-note {
+    flex: 0 0 auto;
+    font-size: clamp(12.5px, 1.8vh, 14.5px);
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+/* ---------- question & options (vertically centered middle block) ---------- */
+.bec-card-mid {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.bec-question {
+    flex: 0 0 auto;
+    font-size: clamp(17px, 2.8vh, 23px);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text);
+    margin: 0 0 clamp(12px, 2.2vh, 20px);
+    text-align: center;
+}
+.bec-options {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(7px, 1.4vh, 12px);
+    align-content: center;
+}
+.bec-options.bec-options-tf { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 460px; margin: 0 auto; width: 100%; }
+.bec-options.bec-options-row { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+
+.bec-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: clamp(38px, 6.4vh, 54px);
+    padding: clamp(8px, 1.5vh, 14px) clamp(12px, 1.8vw, 18px);
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: clamp(15.5px, 2.4vh, 19.5px);
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, color .15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.bec-opt:hover:not(:disabled):not(.is-locked) { border-color: var(--accent-border); }
+.bec-opt:disabled { cursor: default; }
+.bec-opt-letter {
+    flex: 0 0 auto;
+    width: 24px; height: 24px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.bec-opt.is-selected { border-color: var(--accent); background: var(--accent-soft); }
+.bec-opt.is-correct {
+    border-color: var(--ok);
+    background: var(--ok-soft);
+    color: var(--ok-strong);
+}
+.bec-opt.is-wrong {
+    border-color: var(--bad);
+    background: var(--bad-soft);
+    color: var(--bad-strong);
+}
+.bec-opt.is-reveal { border-style: dashed; }
+.bec-opt-mark { margin-left: auto; font-weight: 800; font-size: 16px; }
+
+/* ---------- feedback + hint ---------- */
+.bec-feedback {
+    flex: 0 0 auto;
+    min-height: 1.2em;
+    margin-top: clamp(6px, 1.2vh, 12px);
+    font-size: clamp(13px, 1.9vh, 16px);
+    font-weight: 700;
+}
+.bec-feedback.bec-ok { color: var(--ok); }
+.bec-feedback.bec-bad { color: var(--bad); }
+.bec-hintline {
+    flex: 0 0 auto;
+    margin-top: 6px;
+    font-size: clamp(13.5px, 1.95vh, 16.5px);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--muted);
+    min-height: 1.2em;
+}
+
+/* ---------- bottom control row ---------- */
+.bec-controls {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(6px, 1vw, 10px);
+    margin-top: clamp(8px, 1.6vh, 16px);
+}
+
+/* ---------- script / transcript overlay ---------- */
+.bec-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(14px, 4vh, 40px) clamp(14px, 5vw, 60px);
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+}
+.bec-overlay.is-open { opacity: 1; pointer-events: auto; }
+.bec-overlay-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(560px, 100%);
+    max-height: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 30px 60px -20px rgba(15, 23, 42, 0.45);
+    padding: clamp(14px, 3vh, 26px);
+    transform: translateY(10px) scale(0.98);
+    transition: transform .25s ease;
+}
+.bec-overlay.is-open .bec-overlay-card { transform: none; }
+.bec-overlay-title {
+    font-size: clamp(15.5px, 2.4vh, 19.5px);
+    font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0 0 clamp(8px, 1.8vh, 16px);
+    padding-right: 34px;
+}
+.bec-overlay-close {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 28px; height: 28px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    line-height: 1;
+}
+.bec-overlay-close:hover { color: var(--bad); border-color: var(--bad-border); }
+.bec-script-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 1.2vh, 10px);
+    overflow: hidden;
+}
+.bec-script-line {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: clamp(14.5px, 2.3vh, 18px);
+    line-height: 1.45;
+}
+.bec-script-speaker {
+    flex: 0 0 74px;
+    font-weight: 800;
+    font-size: clamp(13.5px, 1.95vh, 16px);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.bec-script-speaker.bec-speaker-b { color: var(--muted); }
+.bec-script-text { font-weight: 500; color: var(--text); }
+.bec-overlay-pager {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: clamp(8px, 1.6vh, 14px);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- objectives ---------- */
+.bec-obj-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(7px, 1.5vh, 14px);
+    width: min(620px, 100%);
+}
+.bec-obj {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.6vw, 16px);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+    padding: clamp(9px, 1.8vh, 16px) clamp(12px, 2vw, 20px);
+}
+.bec-obj-num {
+    flex: 0 0 auto;
+    width: clamp(26px, 4vh, 34px);
+    height: clamp(26px, 4vh, 34px);
+    border-radius: 9999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: clamp(14.5px, 2.2vh, 18px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px -6px rgba(79, 70, 229, 0.6);
+}
+.bec-obj-text {
+    font-size: clamp(15.5px, 2.55vh, 20.5px);
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+/* ---------- discussion / warm-up cards ---------- */
+.bec-disc-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(8px, 1.8vh, 16px);
+    width: min(640px, 100%);
+}
+.bec-disc {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.6vw, 16px);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+    padding: clamp(10px, 2vh, 18px) clamp(14px, 2.2vw, 22px);
+}
+.bec-disc-num {
+    flex: 0 0 auto;
+    font-size: clamp(19px, 3.1vh, 26px);
+    font-weight: 800;
+    color: var(--accent);
+    opacity: 0.55;
+    font-variant-numeric: tabular-nums;
+}
+.bec-disc-text {
+    font-size: clamp(16px, 2.6vh, 21px);
+    font-weight: 600;
+    line-height: 1.4;
+}
+.bec-footnote {
+    flex: 0 0 auto;
+    margin-top: clamp(6px, 1.4vh, 14px);
+    font-size: clamp(13.5px, 2.05vh, 17px);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--muted);
+    text-align: center;
+}
+
+/* ---------- video player (16:9, empty & disabled until a hosted source exists) ---------- */
+.bec-video-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 1.4vh, 12px);
+    width: 100%;
+}
+.bec-video {
+    position: relative;
+    /* width capped by available height too, so the frame itself stays 16:9 */
+    width: min(100%, 860px, calc((100dvh - 210px) * 1.7778));
+    aspect-ratio: 16 / 9;
+    background: #000;                 /* clean, empty black video area */
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+.bec-video.bec-video-sm {
+    width: min(100%, 540px, calc((100dvh - 340px) * 1.7778));
+}
+.bec-video video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+.bec-video-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+.bec-video-play {
+    width: clamp(44px, 8.5vh, 64px);
+    height: clamp(44px, 8.5vh, 64px);
+    border-radius: 9999px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: transform .15s ease, background .18s ease, opacity .18s ease;
+    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6);
+}
+.bec-video-play svg { width: 42%; height: 42%; margin-left: 6%; }
+.bec-video-play:hover:not(:disabled) { transform: scale(1.06); background: var(--accent-hover); }
+.bec-video-play:disabled {
+    background: rgba(148, 163, 184, 0.30);
+    color: rgba(226, 232, 240, 0.75);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+.bec-video-bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+    opacity: 1;
+}
+.bec-video-bar button {
+    background: transparent;
+    border: none;
+    color: #e2e8f0;
+    cursor: pointer;
+    display: inline-flex;
+    padding: 4px;
+    opacity: 1;
+}
+.bec-video-bar button:disabled { opacity: 0.35; cursor: not-allowed; }
+.bec-video-bar button svg { width: 16px; height: 16px; display: block; }
+.bec-video-track {
+    flex: 1 1 auto;
+    height: 5px;
+    border-radius: 9999px;
+    background: rgba(226, 232, 240, 0.35);
+    overflow: hidden;
+}
+.bec-video-bar button:not(:disabled):hover { color: #fff; }
+.bec-video-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 9999px;
+    background: var(--accent);
+}
+.bec-video-time {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #e2e8f0;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.bec-video-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ---------- vocabulary cards ---------- */
+.bec-vocab-area {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(940px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1.2vh, 12px);
+}
+.bec-vocab-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: clamp(7px, 1.4vh, 14px);
+}
+.bec-wordcard {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+}
+.bec-wordcard-img {
+    position: relative;
+    flex: 0 0 auto;
+    aspect-ratio: 16 / 8;
+    background:
+        radial-gradient(120px 80px at 30% 20%, var(--accent-soft), transparent),
+        linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--accent-glow) 12%, var(--card)));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+}
+.bec-wordcard-img svg { width: 26%; height: 60%; opacity: 0.8; }
+.bec-wordcard-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: clamp(6px, 1.2vh, 12px) clamp(8px, 1.2vw, 14px);
+}
+.bec-wordcard-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.bec-wordcard-word { font-size: clamp(15.5px, 2.4vh, 20px); font-weight: 800; line-height: 1.2; }
+.bec-speak {
+    margin-left: auto;
+    flex: 0 0 auto;
+    width: clamp(22px, 3.4vh, 28px);
+    height: clamp(22px, 3.4vh, 28px);
+    border-radius: 9999px;
+    border: none;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background .18s ease, opacity .18s ease;
+}
+.bec-speak svg { width: 52%; height: 52%; }
+.bec-speak:hover:not(:disabled) { background: var(--accent); color: #fff; }
+.bec-speak:disabled { opacity: 0.4; cursor: not-allowed; }
+.bec-wordcard-meaning { font-size: clamp(13px, 1.95vh, 16px); font-weight: 600; color: var(--muted); line-height: 1.3; }
+.bec-wordcard-example { font-size: clamp(12.5px, 1.85vh, 15px); font-style: italic; font-weight: 500; color: var(--muted); line-height: 1.3; opacity: 0.9; }
+.bec-vocab-pager {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- word bank + fill blanks ---------- */
+.bec-bank {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1.5px dashed var(--accent-glow);
+    border-radius: 14px;
+    padding: clamp(8px, 1.4vh, 14px) clamp(10px, 2vw, 18px);
+    width: min(680px, 100%);
+    margin: 0 auto clamp(7px, 1.4vh, 14px);
+}
+.bec-chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: inherit;
+    font-size: clamp(14.5px, 2.2vh, 17.5px);
+    font-weight: 800;
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: opacity .15s ease, transform .12s ease, background .15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.bec-chip:hover:not(:disabled) { transform: translateY(-1px); }
+.bec-chip:active:not(:disabled) { transform: scale(0.96); }
+.bec-chip:disabled { opacity: 0.28; cursor: not-allowed; }
+.bec-sentences {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(720px, 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(5px, 1.3vh, 12px);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: clamp(10px, 2vh, 22px) clamp(14px, 2.4vw, 28px);
+    overflow: hidden;
+}
+.bec-sentence {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: clamp(15px, 2.35vh, 19px);
+    font-weight: 600;
+    line-height: 1.35;
+}
+.bec-sentence-num {
+    flex: 0 0 auto;
+    width: 20px; height: 20px;
+    border-radius: 7px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12.5px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.bec-blank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: clamp(72px, 12vw, 110px);
+    min-height: 28px;
+    padding: 2px 12px;
+    border-radius: 9px;
+    border: 1.5px dashed var(--muted);
+    background: var(--bg);
+    color: var(--accent);
+    font-family: inherit;
+    font-size: clamp(14.5px, 2.25vh, 18px);
+    font-weight: 800;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, color .15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.bec-blank:hover:not(:disabled) { border-color: var(--accent); }
+.bec-blank.is-filled { border-style: solid; border-color: var(--accent-border); background: var(--accent-soft); }
+.bec-blank.is-correct { border-style: solid; border-color: var(--ok); background: var(--ok-soft); color: var(--ok-strong); }
+.bec-blank.is-wrong { border-style: solid; border-color: var(--bad); background: var(--bad-soft); color: var(--bad-strong); }
+
+/* ---------- reading: document panel + questions panel ---------- */
+.bec-read {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(980px, 100%);
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(8px, 1.6vw, 18px);
+    align-items: stretch;
+}
+.bec-bill {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+.bec-bill-head {
+    flex: 0 0 auto;
+    background: var(--accent);
+    color: #fff;
+    padding: clamp(7px, 1.4vh, 13px) clamp(10px, 1.6vw, 18px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.bec-bill-brand { font-size: clamp(14.5px, 2.3vh, 18.5px); font-weight: 800; letter-spacing: 0.06em; }
+.bec-bill-tag {
+    font-size: clamp(11.5px, 1.65vh, 13.5px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 9999px;
+    padding: 2px 10px;
+    white-space: nowrap;
+}
+.bec-bill-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 0.8vh, 7px);
+    padding: clamp(8px, 1.6vh, 16px) clamp(10px, 1.6vw, 18px);
+    font-size: clamp(13.5px, 2.05vh, 17px);
+    font-weight: 600;
+    overflow: hidden;
+}
+.bec-bill-row { display: flex; justify-content: space-between; gap: 12px; line-height: 1.35; }
+.bec-bill-row span:first-child { color: var(--muted); font-weight: 600; }
+.bec-bill-row span:last-child { color: var(--text); font-weight: 700; text-align: right; }
+.bec-bill-sep { border-top: 1px dashed var(--border); }
+.bec-bill-total {
+    margin-top: auto;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    padding: 7px 12px;
+}
+.bec-bill-total .bec-bill-row span { color: var(--accent) !important; font-weight: 800; }
+.bec-bill-note { font-size: clamp(12px, 1.75vh, 14px); font-style: italic; color: var(--muted); font-weight: 500; }
+.bec-quiz-panel {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- dialogue ---------- */
+.bec-dialogue-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(680px, 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(3px, 0.9vh, 8px);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: clamp(8px, 1.8vh, 18px) clamp(12px, 2.2vw, 26px);
+    overflow: hidden;
+}
+.bec-dline {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(8px, 1.4vw, 14px);
+    font-size: clamp(14.5px, 2.3vh, 18.5px);
+    line-height: 1.4;
+}
+.bec-dspeaker {
+    flex: 0 0 clamp(64px, 9vw, 86px);
+    font-size: clamp(13px, 1.9vh, 15px);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.bec-dspeaker.bec-sp-a { color: var(--accent); }
+.bec-dspeaker.bec-sp-b { color: var(--muted); }
+.bec-dtext { font-weight: 600; color: var(--text); }
+.bec-dtext strong { font-weight: 800; color: var(--accent); }
+
+/* ---------- phrase rows (new language) ---------- */
+.bec-phrase-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(6px, 1.3vh, 12px);
+    width: min(640px, 100%);
+}
+.bec-phrase {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.5vw, 14px);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    box-shadow: var(--shadow-soft);
+    padding: clamp(8px, 1.5vh, 14px) clamp(12px, 1.8vw, 18px);
+    transition: border-color .18s ease, background .18s ease;
+}
+.bec-phrase:hover { border-color: var(--accent-border); background: color-mix(in srgb, var(--accent-soft) 45%, var(--card)); }
+.bec-phrase-text { font-size: clamp(15.5px, 2.45vh, 20px); font-weight: 700; line-height: 1.3; }
+.bec-phrase-en {
+    margin-left: auto;
+    flex: 0 0 auto;
+    font-size: clamp(12.5px, 1.85vh, 15px);
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+/* ---------- closing / review ---------- */
+.bec-review-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(560px, 100%);
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: clamp(12px, 2.4vh, 26px) clamp(14px, 2.6vw, 30px);
+    overflow: hidden;
+}
+.bec-review-label {
+    flex: 0 0 auto;
+    font-size: clamp(13.5px, 1.95vh, 16px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin-bottom: clamp(6px, 1.4vh, 14px);
+}
+.bec-review-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: clamp(6px, 1.3vh, 12px);
+}
+.bec-review-item { display: flex; flex-direction: column; gap: 5px; }
+.bec-review-q {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: clamp(15.5px, 2.45vh, 20px);
+    font-weight: 700;
+    line-height: 1.35;
+}
+.bec-review-q .bec-review-num {
+    flex: 0 0 auto;
+    width: 22px; height: 22px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.bec-review-q .bec-btn { margin-left: auto; }
+.bec-review-a {
+    display: none;
+    margin-left: 32px;
+    font-size: clamp(14.5px, 2.25vh, 18px);
+    font-weight: 600;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.35;
+}
+.bec-review-item.is-open .bec-review-a { display: block; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+    .bec-read { grid-template-columns: 1fr; }
+    .bec-bill { display: none; }
+    .bec-bill-inline-btn { display: inline-flex !important; }
+}
+.bec-bill-inline-btn { display: none; }
+
+@media (max-width: 700px), (max-height: 560px) {
+    .bec-vocab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bec-options { grid-template-columns: 1fr; }
+    .bec-options.bec-options-tf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+    .bec-pill { border-radius: 16px; flex-wrap: wrap; justify-content: center; }
+    .bec-seg { padding: 3px 10px; }
+    .bec-seg + .bec-seg { border-left: none; }
+    .bec-controls .bec-btn { flex: 1 1 40%; }
+}
+
+/* short stages (laptop 768px-high windows, phone landscape) */
+@media (max-height: 620px) {
+    .bec-title { font-size: clamp(19px, 3.3vh, 26px); }
+    .bec-subtitle { display: none; }
+    .bec-header { margin-bottom: 5px; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .bec-slide *, .bec-slide *::before, .bec-slide *::after {
+        animation-duration: 0.001s !important;
+        transition-duration: 0.001s !important;
+    }
+}

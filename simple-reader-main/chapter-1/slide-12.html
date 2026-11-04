@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="bec-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete the sentences with the words in the box</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lesson.css">
+    <script src="lesson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+<div class="bec-slide">
+    <div class="bec-glow"></div>
+    <main class="bec-main">
+        <header class="bec-header" style="margin-bottom:5px;">
+            <h1 class="bec-title" style="font-size:clamp(21px,3.55vh,31px);">Complete the sentences with the <span class="bec-title-accent">words in the box</span></h1>
+        </header>
+
+        <div class="bec-bank" id="word-bank"></div>
+
+        <div class="bec-sentences" id="sentences"></div>
+        <div class="bec-feedback" id="feedback" style="text-align:center;"></div>
+
+        <div class="bec-controls" style="margin-top:6px;">
+            <button type="button" class="bec-btn bec-btn-primary" id="check-btn">Check Answers</button>
+            <button type="button" class="bec-btn bec-btn-ghost" id="show-btn">Show Answers</button>
+            <button type="button" class="bec-btn bec-btn-ghost" id="reset-btn">Reset</button>
+        </div>
+    </main>
+</div>
+
+<script>
+    var BANK = ['bill', 'charge', 'receipt', 'change', 'amount', 'deposit'];
+
+    /* before/after text around each blank + correct word (from the lesson) */
+    var SENTENCES = [
+        { before: 'The waiter brought the', after: 'after we paid.', answer: 'receipt' },
+        { before: 'Is there an extra', after: 'for using the card?', answer: 'charge' },
+        { before: 'The total', after: 'on the bill was $58.', answer: 'amount' },
+        { before: 'I paid with $100 and got $12', after: '.', answer: 'change' },
+        { before: 'You must pay the electricity', after: 'today.', answer: 'bill' },
+        { before: 'I went to the bank to', after: 'my money.', answer: 'deposit' }
+    ];
+
+    var filled = [];   // index of word placed in each sentence, or null
+
+    function renderBank() {
+        var bank = document.getElementById('word-bank');
+        bank.innerHTML = '';
+        BANK.forEach(function (word, wi) {
+            var chip = BEC.el('button', 'bec-chip', word);
+            chip.type = 'button';
+            var used = filled.indexOf(wi) !== -1;
+            chip.disabled = used;
+            chip.addEventListener('click', function () { placeWord(wi); });
+            bank.appendChild(chip);
+        });
+    }
+
+    function renderSentences(state) {
+        /* state: null (neutral) | 'checked' | 'revealed' */
+        var box = document.getElementById('sentences');
+        box.innerHTML = '';
+        SENTENCES.forEach(function (s, si) {
+            var row = BEC.el('div', 'bec-sentence');
+            row.appendChild(BEC.el('span', 'bec-sentence-num', String(si + 1)));
+            row.appendChild(BEC.el('span', null, s.before));
+            var blank = BEC.el('button', 'bec-blank');
+            blank.type = 'button';
+            var wi = filled[si];
+            if (wi != null) {
+                blank.textContent = BANK[wi];
+                blank.classList.add('is-filled');
+                if (state === 'checked' || state === 'revealed') {
+                    blank.disabled = true;
+                    if (BANK[wi] === s.answer) blank.classList.add('is-correct');
+                    else blank.classList.add('is-wrong');
+                } else {
+                    blank.addEventListener('click', function () { removeWord(si); });
+                }
+            } else {
+                blank.textContent = '';
+                if (state === 'revealed') {
+                    var wordIdx = BANK.indexOf(s.answer);
+                    blank.textContent = s.answer;
+                    blank.classList.add('is-filled', 'is-correct');
+                    filled[si] = wordIdx;
+                } else {
+                    blank.addEventListener('click', function () { selectNextBlank = si; });
+                }
+            }
+            row.appendChild(blank);
+            row.appendChild(BEC.el('span', null, s.after));
+            box.appendChild(row);
+        });
+    }
+
+    var selectNextBlank = null;
+
+    function placeWord(wi) {
+        var target = null;
+        if (selectNextBlank != null && filled[selectNextBlank] == null) {
+            target = selectNextBlank;
+        } else {
+            for (var i = 0; i < SENTENCES.length; i++) {
+                if (filled[i] == null) { target = i; break; }
+            }
+        }
+        if (target == null) return;
+        filled[target] = wi;
+        selectNextBlank = null;
+        refresh(null);
+    }
+
+    function removeWord(si) {
+        filled[si] = null;
+        refresh(null);
+    }
+
+    function refresh(state) {
+        renderBank();
+        renderSentences(state);
+        var fb = document.getElementById('feedback');
+        fb.className = 'bec-feedback';
+        fb.textContent = '';
+        if (state === 'checked') {
+            var correct = 0;
+            SENTENCES.forEach(function (s, si) { if (filled[si] != null && BANK[filled[si]] === s.answer) correct++; });
+            fb.textContent = 'You got ' + correct + ' of ' + SENTENCES.length + ' correct.';
+            fb.classList.add(correct === SENTENCES.length ? 'bec-ok' : 'bec-bad');
+        } else if (state === 'revealed') {
+            fb.textContent = 'Answers shown.';
+            fb.classList.add('bec-bad');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        filled = SENTENCES.map(function () { return null; });
+        refresh(null);
+
+        document.getElementById('check-btn').addEventListener('click', function () {
+            if (filled.indexOf(null) !== -1) {
+                var fb = document.getElementById('feedback');
+                fb.className = 'bec-feedback bec-bad';
+                fb.textContent = 'Fill all the blanks first.';
+                return;
+            }
+            refresh('checked');
+        });
+        document.getElementById('show-btn').addEventListener('click', function () {
+            filled = SENTENCES.map(function () { return null; });
+            refresh('revealed');
+            renderBank(); // chips marked used after reveal fill
+        });
+        document.getElementById('reset-btn').addEventListener('click', function () {
+            filled = SENTENCES.map(function () { return null; });
+            selectNextBlank = null;
+            refresh(null);
+        });
+
+        window.resetSlide = function () {
+            filled = SENTENCES.map(function () { return null; });
+            selectNextBlank = null;
+            refresh(null);
+        };
+
+        BEC.entrance('.bec-header, .bec-bank, .bec-sentences, .bec-controls');
+    });
+</script>
+</body>
+</html>
