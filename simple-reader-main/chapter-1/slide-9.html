@@ -19,7 +19,9 @@
             <h1 class="bec-title">New language: <span class="bec-title-accent">saying it politely</span></h1>
             <p class="bec-subtitle">Listen and repeat each phrase</p>
         </header>
+
         <div class="bec-phrase-list" id="phrase-list"></div>
+        <div class="bec-vocab-pager" id="p-pager" style="display:none;"></div>
         <p class="bec-footnote">Practise saying each phrase twice.</p>
     </main>
 </div>
@@ -29,57 +31,115 @@
        MEDIA INTEGRATION — TECH LEAD ONLY
        Each phrase has its own speaker button in the platform style. No
        audio is synthesised in the browser (no TTS). When the hosted
-       recordings are ready, map a phrase to its URL in PHRASE_AUDIO
-       below and that button activates automatically — e.g.
+       recordings are ready, map a phrase number to its URL in
+       PHRASE_AUDIO below and that button activates automatically — e.g.
        PHRASE_AUDIO[0] = 'https://<media-host>/a1/u4l3/polite-01.mp3';
        Buttons without a URL stay visibly disabled.
        ================================================================== */
     var PHRASE_AUDIO = {};
 
     var PHRASES = [
-        'Could I pay by card, please?',
-        'Would you mind giving me a receipt?',
-        'Could you help me with my bill?',
-        'I would like to open an account, please.',
-        'Excuse me, where is the counter?'
+        'I would like to open a bank account.',
+        'I want to deposit some money.',
+        'I need to withdraw some cash.',
+        'Can I pay by card?',
+        'Please insert your card.',
+        'How much is my electricity bill?',
+        'I need to pay my water bill.',
+        'When is the payment due?',
+        'Your total is forty-seven dollars.',
+        'Can I have a receipt, please?',
+        'I would like to check my balance.',
+        'Thank you for your help.'
     ];
+
+    var stepIdx = 0;
+
+    function stepSize() {
+        var w = window.innerWidth;
+        var stage = Math.max(320, window.innerHeight);
+        if (w <= 699) return 4;                       // phones
+        if (stage < 640) return 5;                    // short laptop windows
+        return 6;                                     // roomy screens
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
         var list = document.getElementById('phrase-list');
+        var pager = document.getElementById('p-pager');
         var players = [];
 
-        PHRASES.forEach(function (phrase, i) {
-            var row = BEC.el('div', 'bec-phrase');
-            var speak = BEC.el('button', 'bec-speak');
-            speak.type = 'button';
-            speak.setAttribute('aria-label', 'Listen: ' + phrase);
-            speak.appendChild(BEC.icon('speaker'));
-            row.appendChild(speak);
-            row.appendChild(BEC.el('span', 'bec-phrase-text', phrase));
-            row.appendChild(BEC.el('span', 'bec-phrase-en', 'Phrase ' + (i + 1)));
-            list.appendChild(row);
+        function render() {
+            list.innerHTML = '';
+            pager.innerHTML = '';
+            players = [];
+            var STEP = stepSize();
+            var pages = Math.ceil(PHRASES.length / STEP);
+            if (stepIdx >= pages) stepIdx = 0;
+            var phrases = PHRASES.slice(stepIdx * STEP, stepIdx * STEP + STEP);
 
-            var src = PHRASE_AUDIO[i] || '';
-            if (src) {
-                var audio = new Audio(src);
-                audio.preload = 'none';
-                speak.addEventListener('click', function () {
-                    if (!audio.paused) { audio.pause(); audio.currentTime = 0; return; }
-                    players.forEach(function (a) { a.pause(); a.currentTime = 0; });
-                    audio.play().catch(function () {});
-                });
-                players.push(audio);
+            phrases.forEach(function (phrase, i) {
+                var num = stepIdx * STEP + i;
+                var row = BEC.el('div', 'bec-phrase');
+                var speak = BEC.el('button', 'bec-speak');
+                speak.type = 'button';
+                speak.setAttribute('aria-label', 'Listen: ' + phrase);
+                speak.appendChild(BEC.icon('speaker'));
+                row.appendChild(speak);
+                row.appendChild(BEC.el('span', 'bec-phrase-text', phrase));
+                row.appendChild(BEC.el('span', 'bec-phrase-en', 'Phrase ' + (num + 1)));
+                list.appendChild(row);
+
+                var src = PHRASE_AUDIO[num] || '';
+                if (src) {
+                    var audio = new Audio(src);
+                    audio.preload = 'none';
+                    speak.addEventListener('click', function () {
+                        if (!audio.paused) { audio.pause(); audio.currentTime = 0; return; }
+                        players.forEach(function (a) { a.pause(); a.currentTime = 0; });
+                        audio.play().catch(function () {});
+                    });
+                    players.push(audio);
+                } else {
+                    speak.disabled = true;
+                    speak.title = 'Audio will be connected when the hosted file is available';
+                }
+            });
+
+            if (pages > 1) {
+                pager.style.display = '';
+                var prev = BEC.el('button', 'bec-btn bec-btn-ghost', '‹');
+                prev.type = 'button';
+                prev.setAttribute('aria-label', 'Previous phrases');
+                prev.disabled = stepIdx === 0;
+                prev.addEventListener('click', function () { stepIdx--; render(); });
+                var label = BEC.el('span', null, (stepIdx + 1) + ' / ' + pages);
+                var next = BEC.el('button', 'bec-btn bec-btn-ghost', '›');
+                next.type = 'button';
+                next.setAttribute('aria-label', 'More phrases');
+                next.disabled = stepIdx === pages - 1;
+                next.addEventListener('click', function () { stepIdx++; render(); });
+                pager.appendChild(prev);
+                pager.appendChild(label);
+                pager.appendChild(next);
             } else {
-                speak.disabled = true;
-                speak.title = 'Audio will be connected when the hosted file is available';
+                pager.style.display = 'none';
             }
+        }
+
+        var resizeTimer = null;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () { stepIdx = 0; render(); }, 200);
         });
+        render();
 
         window.stopSlideAudio = function () {
             players.forEach(function (a) { a.pause(); a.currentTime = 0; });
         };
         window.resetSlide = function () {
             window.stopSlideAudio();
+            stepIdx = 0;
+            render();
         };
 
         BEC.entrance('.bec-header, .bec-phrase, .bec-footnote');

@@ -1043,17 +1043,16 @@ html.dark .bec-slide .bec-glow::after { background: rgba(59, 130, 246, 0.16); }
 }
 .bec-dspeaker {
     flex: 0 0 auto;
-    min-width: clamp(60px, 10vw, 104px);
+    min-width: clamp(76px, 12vw, 128px);
     font-size: clamp(13.5px, 2vh, 16px);
     font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
     white-space: nowrap;
+    color: var(--accent);
 }
-.bec-dspeaker.bec-sp-a { color: var(--accent); }
-.bec-dspeaker.bec-sp-b { color: var(--muted); }
+.bec-dspeaker::after { content: ':'; }
+.bec-dspeaker.bec-sp-a, .bec-dspeaker.bec-sp-b { color: var(--accent); }
 .bec-dtext { font-weight: 600; color: var(--text); }
-.bec-dtext strong { font-weight: 800; color: var(--accent); }
+.bec-dtext strong { font-weight: 800; color: var(--text); }
 
 /* wide screens keep the single-column stack — phrases under phrases */
 .bec-dline { break-inside: avoid; }
